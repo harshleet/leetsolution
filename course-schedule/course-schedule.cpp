@@ -6,6 +6,7 @@ public:
         for(int i=0;i<prerequisites.size();i++){
             adj[prerequisites[i][0]].push_back(prerequisites[i][1]);
         }
+       //BHai adjacency list create kar le 
 
         vector<int>indegree(V,0);
         
@@ -13,7 +14,7 @@ public:
             for(auto it:adj[i]){
                 indegree[it]++;
             }
-        }
+        }//bhai bo course dekh jisme koi pre-req. nhi hai
 
         queue<int>q;
         for(int i=0;i<V;i++){
@@ -22,6 +23,7 @@ public:
                    q.push(i);
                  }         
         }
+        //now traverse it
         vector<int>ans;
         while(!q.empty()){
             int node=q.front();
@@ -34,6 +36,7 @@ public:
                 }
             }
         }
+        //if you can find them ll than just return true
         if(ans.size()==numCourses)return true;
         return false;
     }
