@@ -8,19 +8,23 @@ public:
             if(s.empty() ||(asteroids[i]>=0) ){
                 s.push(asteroids[i]);
             }
-           else{
-               while (!s.empty() && s.top() > 0 && s.top() < abs(asteroids[i])) {
-            s.pop();
-        }
-
-        if (!s.empty() && s.top() == abs(asteroids[i])) {
-            s.pop();
-            continue;
-        }
-
-        if (s.empty() || s.top() * asteroids[i] > 0) {
-            s.push(asteroids[i]);
-        }
+             else if(s.top()>abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
+                continue;
+               }else{
+               
+                   while( !s.empty()&& s.top()<abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
+                       s.pop();
+                   }
+                    if(!s.empty()&& s.top()>abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
+                       continue;
+                   }
+                   if(!s.empty()&& s.top()==abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
+                       s.pop();
+                       continue;
+                   }
+                   s.push(asteroids[i]);
+                   
+                   
                   
                }   
         }
