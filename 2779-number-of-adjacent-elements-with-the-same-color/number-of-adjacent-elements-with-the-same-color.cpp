@@ -9,12 +9,11 @@ public:
             int col= queries[i][1];
 
             if (ind > 0 && v[ind-1]==col && v[ind-1]!=0)a++;
-            if (ind < n-1 && v[ind+1]==col && v[ind+1]!=0)a++;
-            
+          if (ind > 0 && v[ind-1]==v[ind] && v[ind-1]!=0)a--;
 
            
-           if (ind > 0 && v[ind-1]==v[ind] && v[ind-1]!=0)a--;
-           if (ind <n-1 && v[ind+1]==v[ind] && v[ind+1]!=0)a--;
+            if (ind < n-1 && v[ind+1]==col && v[ind+1]!=0)a++;
+            if (ind <n-1 && v[ind+1]==v[ind] && v[ind+1]!=0)a--;
 
             v[ind]=col;
             ans[i] = a;
