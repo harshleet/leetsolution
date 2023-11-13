@@ -1,24 +1,28 @@
+#include <algorithm>
+#include <string>
+#include <set>
+
 class Solution {
 public:
     string sortVowels(string s) {
-        vector<char>v;
-        set<char>s1={'a','e','i','o','u'};
-        set<char>s2={'A','E','I','O','U'};
-        for(int i=0;i<s.size();i++){
-            if(s1.find(s[i])!=s1.end() || s2.find(s[i])!=s2.end()){
-                v.push_back(s[i]);
+        set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+        multiset<char> st;
+
+        for (int i = 0; i < s.size(); ++i) {
+            if (vowels.find(s[i]) != vowels.end()) {
+                st.insert(s[i]);
             }
         }
-        sort(v.begin(),v.end());
-        int j=0;
-         for(int i=0;i<s.size();i++){
-            if(s1.find(s[i])==s1.end() && s2.find(s[i])==s2.end()){
-                continue;
-            }else{
-                s[i]=v[j];
-                j++;
+
+        auto it = st.begin();
+     
+        for (int i = 0; i < s.size(); ++i) {
+            if (vowels.find(s[i]) != vowels.end()) {
+                s[i] = *it;
+                it++;
             }
         }
+
         return s;
     }
 };
