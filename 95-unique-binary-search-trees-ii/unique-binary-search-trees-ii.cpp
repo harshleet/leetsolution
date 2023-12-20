@@ -11,28 +11,28 @@
  */
 class Solution {
 public:
-    vector<TreeNode*> generateTrees(int n) {
-        return n ? generate_trees(1, n) : vector<TreeNode*>();
-    }
-
-private:
-    vector<TreeNode*> generate_trees(int start, int end) {
-        if (start > end) return {nullptr};
-
-        vector<TreeNode*> all_trees;
-        for (int i = start; i <= end; i++) {
-            vector<TreeNode*> left_trees = generate_trees(start, i - 1);
-            vector<TreeNode*> right_trees = generate_trees(i + 1, end);
-
-            for (TreeNode* l : left_trees) {
-                for (TreeNode* r : right_trees) {
+ vector<TreeNode*> backtrack(int start,int end) {
+        if(start>end){
+            return {nullptr};
+        }
+      
+      vector<TreeNode*>all;
+        for(int i=start;i<=end;i++){
+             vector<TreeNode*> left=backtrack(start,i-1);
+             vector<TreeNode*> right=backtrack(i+1,end);
+             for (TreeNode* l : left) {
+                for (TreeNode* r : right) {
                     TreeNode* current_tree = new TreeNode(i);
                     current_tree->left = l;
                     current_tree->right = r;
-                    all_trees.push_back(current_tree);
+                    all.push_back(current_tree);
                 }
             }
         }
-        return all_trees;
+        return all;
+    }
+    vector<TreeNode*> generateTrees(int n) {
+      
+        return backtrack(1,n);
     }
 };
