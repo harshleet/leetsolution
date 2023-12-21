@@ -1,6 +1,6 @@
 class Solution {
 public:
-    long long countSubarrays(vector<int>& nums, long long k) {
+    long long countSubarrays(vector<int>& nums, long long& k) {
         long long j=0;
         long long sum=0,cnt=0;
         for(int i=0;i<nums.size();i++){
