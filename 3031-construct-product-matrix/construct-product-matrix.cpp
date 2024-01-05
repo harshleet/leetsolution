@@ -3,8 +3,8 @@ public:
 int mod=12345;
     vector<vector<int>> constructProductMatrix(vector<vector<int>>& grid) {
         long long int p=1,s=1;
-        vector<vector<int>>pre(grid.size(),vector<int>(grid[0].size()));
-        vector<vector<int>>suf(grid.size(),vector<int>(grid[0].size()));
+        vector<vector<long long int>>pre(grid.size(),vector<long long int>(grid[0].size()));
+        vector<vector<long long int>>suf(grid.size(),vector<long long int>(grid[0].size()));
         for(int i=0;i<grid.size();i++){
             for(int j=0;j<grid[0].size();j++){
                pre[i][j]=p;
