@@ -11,25 +11,22 @@
  */
 class Solution {
 public:
-int maxi=INT_MIN;
-    void dfs(TreeNode* root,vector<int>&par){
+    void helper(TreeNode* root,vector<int>&cov,int &maxi){
         if(root==NULL){
             return;
         }
-        for(int i=0;i<par.size();i++){
-            maxi=max(abs(root->val-par[i]),maxi);
+        for(int i=0;i<cov.size();i++){
+            maxi=max(maxi,abs(cov[i]-root->val));
         }
-        par.push_back(root->val);
-        dfs(root->left,par);
-        dfs(root->right,par);
-        par.pop_back();
+        cov.push_back(root->val);
+        helper(root->left,cov,maxi);
+        helper(root->right,cov,maxi);
+        cov.pop_back();
     }
     int maxAncestorDiff(TreeNode* root) {
-        if(root==NULL){
-            return 0;
-        }
-        vector<int>par;
-        dfs(root,par);
+        vector<int>cov;
+        int maxi=0;
+        helper(root,cov,maxi);
         return maxi;
     }
 };
