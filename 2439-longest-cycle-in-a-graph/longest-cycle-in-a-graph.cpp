@@ -11,7 +11,7 @@ int maxi=-1;
                dfs(it,adj,vis,len,lvl+1,pvis);
                 
             }else if(pvis[it]){
-                    maxi=max(maxi,lvl+1-len[it]);
+                    maxi=max(maxi,lvl-len[it]);
              }
         }
        pvis[node]=0;
@@ -33,6 +33,9 @@ int maxi=-1;
                 dfs(i,adj,vis,len,0,pvis);
             }
         }
-        return maxi;
+        if(maxi==-1){
+            return -1;
+        }
+        return maxi+1;
     }
 };
