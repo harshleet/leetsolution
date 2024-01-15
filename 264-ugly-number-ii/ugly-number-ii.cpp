@@ -6,10 +6,13 @@ public:
        long long int cnt=0;
        s.insert(1);
        long long int val=1;
-       while(!s.empty() && cnt <n){
+       while(!s.empty() && n > 0){
             val=*(s.begin());
             s.erase(val);
-           cnt++;
+           n--;
+           if (n == 0) {
+                break;
+            }
             s.insert(val*2);
             
             s.insert(val*3);
