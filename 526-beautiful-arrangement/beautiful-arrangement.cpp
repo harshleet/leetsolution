@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int helper(int ind,map<int,bool>&m,vector<int>&ds,int& n,set<vector<int>>&s){
+    int helper(int ind,map<int,bool>&m,vector<int>&ds,int& n){
         if(ds.size()==n){
             return 1;
         }
@@ -9,7 +9,7 @@ public:
            if(m[i]==false && (i%ind==0 || ind%i==0)){
                m[i]=true;
                ds.push_back(i);
-               a+=helper(ind+1,m,ds,n,s);
+               a+=helper(ind+1,m,ds,n);
                m[i]=false;
                ds.pop_back();
                
@@ -20,11 +20,8 @@ public:
     int countArrangement(int n) {
         map<int,bool>m;
         vector<int>ds;
-        set<vector<int>>s;
-        for(int i=1;i<n;i++){
-            m[i]=false;
-        }
-        int a=helper(1,m,ds,n,s);
+        
+        int a=helper(1,m,ds,n);
         return a;
     }
 };
