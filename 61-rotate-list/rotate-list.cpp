@@ -14,29 +14,27 @@ public:
         if(head==NULL){
             return head;
         }
-         //i m taking extra space
-         int size=0;
-         ListNode* last=head;
-         while(last->next!=NULL){
-             size++;
-             last=last->next;
-         }
-         if(k%(size+1)==0){
-             return head;
-         }
-         int moves=size+1-k%(size+1);
-         int i=0;
-         ListNode* temp=NULL;
-         ListNode* t3=head;
-         while(t3!=NULL && i<moves ){
-            temp=t3;
-            t3=t3->next;
-            i++;
-         }
-         ListNode* t2=temp->next;
-         temp->next=NULL;
-         last->next=head;
-         return t2;
-         
+        int size=0;
+        ListNode* temp=head;
+        while(temp->next!=NULL){
+            size++;
+            temp=temp->next;
+        }
+        if(k%(size+1)==0){
+            return head;
+        }
+        int actual=k%(size+1);
+        ListNode* temp2=head;
+        ListNode* start=NULL;
+        int cov=0;
+        while(temp2!=NULL && cov<(size)-actual){
+            temp2=temp2->next;
+            cov++;
+        }
+        start=temp2->next;
+        temp2->next=NULL;
+        temp->next=head;
+        return start;
+   
     }
 };
