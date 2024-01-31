@@ -17,9 +17,7 @@ public:
             temp=temp->next;
             size++;
         }
-        if(size==1 && n==1){
-            return NULL;
-        }
+        
         int cnt=0;
         ListNode* prev=new ListNode(0);
         prev->next=head;
