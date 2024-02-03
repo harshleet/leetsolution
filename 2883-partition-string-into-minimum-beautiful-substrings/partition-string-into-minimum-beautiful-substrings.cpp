@@ -5,9 +5,9 @@ public:
         if(ind>=s.size()){
             return 0;
         }
-        // if(dp[ind]!=-1){
-        //     return dp[ind];
-        // }
+        if(dp[ind]!=-1){
+            return dp[ind];
+        }
         int mini=1e8;
         for(int i=1;i<=s.size()-ind;i++){
             string sub=s.substr(ind,i);
