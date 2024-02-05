@@ -14,15 +14,10 @@ public:
        
         int mini=INT_MAX;
         for(auto it:m){
-            it.second.push_back(nums.size());
              int maxi=INT_MIN;
             for(int j=0;j<it.second.size()-1;j++){
                maxi=max(maxi,it.second[j+1]-it.second[j]);
             }
-            // int a=nums.size()-1-it.second.back();
-            
-            // maxi=max(maxi,a);
-            // cout<<maxi<<" ";
             mini=min(mini,maxi);
         }
        return ceil(mini/2);
