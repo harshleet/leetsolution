@@ -7,12 +7,9 @@ public:
             nums.push_back(nums[i]);
         }
         for(int i=0;i<nums.size();i++){
-            if(m.find(nums[i])==m.end()){
-                m[nums[i]].push_back(0);
+           
                 m[nums[i]].push_back(i);
-            }else{
-                m[nums[i]].push_back(i);
-            }
+            
         }
        
         int mini=INT_MAX;
