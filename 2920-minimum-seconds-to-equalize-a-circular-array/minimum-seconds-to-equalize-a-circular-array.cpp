@@ -20,6 +20,6 @@ public:
             }
             mini=min(mini,maxi);
         }
-       return ceil(mini/2);
+       return  mini/2;
     }
 };
