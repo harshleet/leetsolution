@@ -11,23 +11,22 @@
  */
 class Solution {
 public:
-    TreeNode* helper(TreeNode* root, int low, int high){
+    TreeNode* dfs(TreeNode* root,int low,int high){
         if(root==NULL){
             return NULL;
         }
-        if(root->val<low){
-            return helper(root->right,low,high);
+       
+        if(root->val<low ){
+            return dfs(root->right,low,high);
         }
         if(root->val>high){
-            return helper(root->left,low,high);
+           return dfs(root->left,low,high);
         }
-            root->left=helper(root->left,low,high);
-            root->right=helper(root->right,low,high);
-            return root;
-
+        root->left=dfs(root->left,low,high);
+        root->right=dfs(root->right,low,high);
+        return root;
     }
     TreeNode* trimBST(TreeNode* root, int low, int high) {
-       return  helper(root,low,high);
-      
+        return dfs(root,low,high);
     }
 };
