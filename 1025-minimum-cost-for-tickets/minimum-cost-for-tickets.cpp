@@ -8,10 +8,11 @@ vector<int>d={1,7,30};
         if(dp[ind][last+1]!=-1){
             return dp[ind][last+1];
         }
+         int mini=1e8;
         if(last>=days[ind]){
-            return dp[ind][last+1]=helper(ind+1,last,days,costs,dp);    
+            mini=min(mini,helper(ind+1,last,days,costs,dp));    
         }
-        int mini=1e8;
+       
         for(int i=0;i<3;i++){
            mini=min(mini,costs[i]+helper(ind+1,days[ind]+d[i]-1,days,costs,dp));
         }
