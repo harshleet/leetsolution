@@ -11,22 +11,35 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root,map<int,vector<int>>&m,int lvl){
+    void helper(TreeNode* root,vector<vector<int>>&ans){
         if(root==NULL){
             return;
         }
-        m[lvl].push_back(root->val);
-        helper(root->left,m,lvl+1);
-        helper(root->right,m,lvl+1);
-
+       queue<TreeNode*>q;
+       q.push(root);
+       while(!q.empty()){
+           int n=q.size();
+           vector<int>temp;
+           for(int i=0;i<n;i++){
+               TreeNode* node=q.front();
+               q.pop();
+               temp.push_back(node->val);
+               if(node->left!=NULL){
+                   q.push(node->left);
+               }
+               if(node->right!=NULL){
+                   q.push(node->right);
+               }
+           }
+           ans.push_back(temp);
+       }
     }
     vector<vector<int>> levelOrder(TreeNode* root) {
-        map<int,vector<int>>m;
-        vector<vector<int>>ans;
-        helper(root,m,0);
-        for(auto it:m){
-           ans.push_back(it.second);
+        if(root==NULL){
+            return{};
         }
+        vector<vector<int>>ans;
+        helper(root,ans);
         return ans;
     }
 };
