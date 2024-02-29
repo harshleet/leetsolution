@@ -1,43 +1,33 @@
 class Solution {
 public:
-    bool possible(int day,vector<int>&bloomDay,int m,int k){
-        int cnt=0;
-        int bou=0;
+    bool isPossible(int mid,vector<int>& bloomDay, int m, int k){
+        int size=0,cnt=0;
         for(int i=0;i<bloomDay.size();i++){
-            if(bloomDay[i]<=day){
-                cnt++;
+            if(bloomDay[i]<=mid){
+                size++;
             }else{
-                bou+=(cnt/k);
-                cnt=0;
+                size=0;
             }
+            if(size==k){
+                cnt++;
+                size=0;
+            }
+
         }
-         bou+=(cnt/k);
-        if(bou>=m){
-            return true;
-        }return false;
+        return cnt>=m;
     }
     int minDays(vector<int>& bloomDay, int m, int k) {
-        int mini=INT_MAX;
-        int maxi=INT_MIN;
-        for(int i=0;i<bloomDay.size();i++){
-            mini=min(mini,bloomDay[i]);
-            maxi=max(maxi,bloomDay[i]);
-        }
-        int low=mini;
-        int high=maxi;
-        bool f=false;
+        int low=1,high=*max_element(bloomDay.begin(),bloomDay.end());
+        int ans=-1;
         while(low<=high){
             int mid=(low+high)/2;
-            if(possible(mid,bloomDay,m,k)){
+            if(isPossible(mid,bloomDay,m,k)){
+                ans=mid;
                 high=mid-1;
-                f=true;
             }else{
                 low=mid+1;
             }
         }
-        if(f==false){
-            return -1;
-        }
-        return low;
+        return ans;
     }
 };
