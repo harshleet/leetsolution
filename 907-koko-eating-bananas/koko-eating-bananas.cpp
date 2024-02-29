@@ -1,19 +1,18 @@
 class Solution {
 public:
- bool check(int mid,vector<int>&piles,long long int h){
-     long long int time=0;
-     for(int i=0;i<piles.size();i++){
-       time+=ceil(double(piles[i]/(double(mid))));
-     }
-     return time<=h;
- }
+   bool isPossible(vector<int>& piles,int k, int h){
+       long long int p=0;
+       for(int i=0;i<piles.size();i++){
+           p+=ceil(piles[i]/(double)k);
+       }
+       return p<=h;
+   }
     int minEatingSpeed(vector<int>& piles, int h) {
         sort(piles.begin(),piles.end());
-        int low=1,high=piles.back();
-       int ans=-1;
+        int low=1,high=piles.back(),ans=-1;
         while(low<=high){
             int mid=(low+high)/2;
-            if(check(mid,piles,h)){
+            if(isPossible(piles,mid,h)){
                 ans=mid;
                 high=mid-1;
             }else{
