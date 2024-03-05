@@ -1,40 +1,34 @@
 class Solution {
 public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        //two times binary search
-
-        int low=0,high=matrix.size()-1;
-        int ans=-1;
+    bool binarySearch(int row,vector<vector<int>>& matrix,int target){
+        int low=0,high=matrix[row].size()-1;
         while(low<=high){
-                    int mid=(low+high)/2;
-                    if(target<=matrix[mid].back() && target>=matrix[mid][0]){
-                        ans=mid;
-                        break;
-                    }
-                    else if(target>matrix[mid].back()){
-                        low=mid+1;
-                    }else if(target<matrix[mid][0]){
-                        high=mid-1;
-                    }
-           }
-          if(ans==-1){
-              return false;
-          }
-           
-                low=0,high=matrix[ans].size();
-                while(low<=high){
-                    int mid=(low+high)/2;
-                    if(target<matrix[ans][mid]){
-                        high=mid-1;
-                    }else if(target>matrix[ans][mid]){
-                        low=mid+1;
-                    }else{
-                        return true;
-                    }
-                }
-           
-            
-        
+            int mid=(low+high)/2;
+            if(matrix[row][mid]==target ){
+                return true;
+            }
+            else if(matrix[row][mid]>target){
+                high=mid-1;
+            }else {
+                low=mid+1;
+            }
+        }
+        return false;
+    }
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int low=0,high=matrix.size()-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(matrix[mid][0]<=target && matrix[mid].back()>=target){
+                bool a=binarySearch(mid,matrix,target);
+                return a;
+            }
+            else if(matrix[mid][0]>target){
+                high=mid-1;
+            }else if(matrix[mid].back()<target){
+                low=mid+1;
+            }
+        }
         return false;
     }
 };
