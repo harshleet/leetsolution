@@ -16,15 +16,18 @@ bool binarySearch(int row,vector<vector<int>>& matrix,int target){
         return false;
     }
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        for(int i=0;i<matrix.size();i++){
-            if(matrix[i][0]<=target && matrix[i].back()>=target){
-                bool a=binarySearch(i,matrix,target);
-                if(a==true){
-                    return a;
-                }
+        int i=0,j=matrix[0].size()-1;
+
+        while(i<matrix.size() && j>=0){
+            if(matrix[i][j]==target){
+                return true;
+            }else if(matrix[i][j]>target){
+                j--;
+            }else if(matrix[i][j]<target){
+                i++;
             }
+
         }
-        
         return false;
     } 
 };
