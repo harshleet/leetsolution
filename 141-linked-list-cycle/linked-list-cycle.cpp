@@ -12,20 +12,14 @@ public:
         if(head==NULL){
             return false;
         }
-        ListNode* fast=head;
-        ListNode* slow=head;
-
-        while( fast !=NULL && fast->next!=NULL  ){
-            fast=fast->next->next;
-            slow=slow->next;
-            
-            if(fast==slow){
-              return true;
-            }
-        } 
+        map<ListNode*,int>m; 
+        while(head!=NULL){
+              if(m.find(head)!=m.end()){
+                  return true;
+              }
+              m[head]++;
+              head=head->next;
+        }
         return false;
     }
 };
-
-		// if head is NULL then return false;
-       
