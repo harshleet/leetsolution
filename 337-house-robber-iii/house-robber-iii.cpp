@@ -11,26 +11,30 @@
  */
 class Solution {
 public:
-    int helper(TreeNode* root,map<TreeNode*,int>&m){
+    int helper(TreeNode* root,map<TreeNode*,int>&dp){
         if(root==NULL){
             return 0;
         }
-        if(m.find(root)!=m.end()){
-            return m[root];
+       
+        if(dp.find(root)!=dp.end()){
+            return dp[root];
         }
-        int pick=root->val;
-        if(root->right!=NULL){
-           pick+=helper(root->right->left,m)+helper(root->right->right,m);
-        }
+        int ntake=INT_MIN,take=root->val;
+          ntake=max(ntake,helper(root->left,dp)+helper(root->right,dp));
         if(root->left!=NULL){
-            
-            pick+=helper(root->left->left,m)+helper(root->left->right,m);
+                  take+=helper(root->left->left,dp)+helper(root->left->right,dp);
         }
-        int npick=helper(root->right,m)+helper(root->left,m);
-        return  m[root]=max(npick,pick);
+        if(root->right!=NULL){
+                  take+=helper(root->right->left,dp)+helper(root->right->right,dp);
+        }
+        return dp[root]=max(take,ntake);
     }
     int rob(TreeNode* root) {
-        map<TreeNode*,int>m;
-        return helper(root,m);
+        if(root==NULL){
+            return 0;
+        }
+       map<TreeNode*,int>dp;
+       return helper(root,dp);
+
     }
 };
