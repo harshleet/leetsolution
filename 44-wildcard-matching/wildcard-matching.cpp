@@ -12,7 +12,7 @@ public:
             }
             return true;
         }
-        if(ind1>=s.size() || ind2>=p.size()){
+        if(ind2>=p.size()){
             return false;
         }
         if(dp[ind1][ind2]!=-1){
