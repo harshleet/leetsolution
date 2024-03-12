@@ -2,34 +2,34 @@ class Solution {
 public:
     int minimumEffortPath(vector<vector<int>>& heights) {
         int n=heights.size(),m=heights[0].size();
-        vector<vector<int>>dist(n,vector<int>(m,INT_MAX));
+        vector<vector<int>>dis(n,vector<int>(m,INT_MAX));
         priority_queue<tuple<int,int,int>,vector<tuple<int,int,int>>,greater<tuple<int,int,int>>>pq;
+
         pq.push({0,0,0});
-        dist[0][0]=0;
-        vector<int>drow={0,0,-1,1};
-        vector<int>dcol={-1,1,0,0};
-       int maxi=0;
+        dis[0][0]=1;
+        vector<int>dr={1,-1,0,0};
+        vector<int>dc={0,0,1,-1};
         while(!pq.empty()){
-            int h=get<0>(pq.top());
+            int dist=get<0>(pq.top());
             int row=get<1>(pq.top());
             int col=get<2>(pq.top());
             pq.pop();
             if(row==n-1 && col==m-1){
-                return h;
+                return dist;
             }
             for(int i=0;i<4;i++){
-                int nrow=row+drow[i];
-                int ncol=col+dcol[i];
+                int nrow=row+dr[i];
+                int ncol=col+dc[i];
                 if(nrow>=0 && ncol>=0 && nrow<n && ncol<m){
-                    int maxd=max(h,abs(heights[nrow][ncol]-heights[row][col]));
-                    if(maxd<dist[nrow][ncol]){
-                        dist[nrow][ncol]=maxd;
-                        pq.push({dist[nrow][ncol],nrow,ncol});
-                    }
+                int maxi=max(dist,abs(heights[row][col]-heights[nrow][ncol]));
+                if(dis[nrow][ncol]>maxi){
+                    dis[nrow][ncol]=maxi;
+                    pq.push({maxi,nrow,ncol});
                 }
-            }
+                }
 
+            }
         }
-        return 0;
+        return -1;
     }
 };
