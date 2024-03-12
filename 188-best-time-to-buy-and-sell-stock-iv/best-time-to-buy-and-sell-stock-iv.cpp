@@ -1,27 +1,23 @@
 class Solution {
 public:
-   int helper(int ind,vector<int>&prices, vector<vector<vector<int>>>&dp,bool pur,int lim){
+    int helper(int ind,int buy,int lim, vector<int>& prices,vector<vector<vector<int>>>& dp,int k){
         if(ind>=prices.size() || lim==0){
-            if(pur==0){
-                return 0;
-            }
-            return -1e8;
+            return 0;
         }
-        if(dp[ind][pur][lim]!=-1){
-            return dp[ind][pur][lim];
+        if(dp[ind][buy][lim]!=-1){
+            return dp[ind][buy][lim];
         }
-       
-        int ntake=helper(ind+1,prices,dp,pur,lim);
-        
-        if(pur==1){
-              return dp[ind][pur][lim]=max(ntake,prices[ind]+helper(ind+1,prices,dp,0,lim-1));
+        int skip=helper(ind+1,buy,lim,prices,dp,k);
+        int buys=INT_MIN,sell=INT_MIN;
+        if(buy==0){
+              buys=-prices[ind]+helper(ind+1,1,lim,prices,dp,k);
+        }else if(buy==1){
+            sell=prices[ind]+helper(ind+1,0,lim-1,prices,dp,k);
         }
-        return dp[ind][pur][lim]=max(ntake,-prices[ind]+helper(ind+1,prices,dp,1,lim));
+        return dp[ind][buy][lim]=max({skip,sell,buys});
     }
     int maxProfit(int k, vector<int>& prices) {
-          int n=prices.size();
-          int lim=k;
-        vector<vector<vector<int>>>dp(n,vector<vector<int>>(2,vector<int>(lim+1,-1)));
-        return helper(0,prices,dp,0,lim);
+        vector<vector<vector<int>>>dp(prices.size(),vector<vector<int>>(2,vector<int>(k+1,-1)));
+        return helper(0,0,k,prices,dp,k);
     }
 };
