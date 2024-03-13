@@ -1,31 +1,23 @@
 class Solution {
 public:
-int cal(vector<int>&nums,int k){
-       
-        int odd=0;
-        vector<int>prefix(nums.size());
+    int helper(vector<int>& nums, int k){
+        int cnt=0,j=0,ans=0;
         for(int i=0;i<nums.size();i++){
-           
-            prefix[i]=nums[i]%2;
-            cout<<prefix[i]<<" ";
-        }
-         int j=0;
-       int sum=0;
-       int cnt=0;
-       for(int i=0;i<prefix.size();i++){
-           if(prefix[i]==1){
-               sum+=prefix[i];
-           }
-         
-           while(sum>k && j<prefix.size()){
-               sum-=prefix[j];
+            if(nums[i]%2==1){
+                cnt++;
+            }
+            while(cnt>k && j<=i){
+                if(nums[j]%2==1){
+                 cnt--;
+               }
                j++;
-           }
-           cnt+=i-j+1;
-       }
-        return cnt;
-}
+            }
+
+             ans+=i-j+1;
+        }
+        return ans;
+    }
     int numberOfSubarrays(vector<int>& nums, int k) {
-           return cal(nums,k)-cal(nums,k-1);
+        return helper(nums,k)-helper(nums,k-1);
     }
 };
