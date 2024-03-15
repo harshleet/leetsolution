@@ -13,14 +13,15 @@ public:
         if(root==NULL){
             return NULL;
         }
+        
+        TreeNode* l=helper(root->left,p,q);
+        TreeNode* r=helper(root->right,p,q);
         if(root->val==p->val){
             return p;
         }
         if(root->val==q->val){
             return q;
         }
-        TreeNode* l=helper(root->left,p,q);
-        TreeNode* r=helper(root->right,p,q);
         if(l==NULL && r==NULL){
             return NULL;
         }
