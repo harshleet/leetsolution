@@ -1,6 +1,8 @@
 class Solution {
 public:
     int findMaxLength(vector<int>& nums) {
+        // check the subset sum zero
+        //very important question
         int n=nums.size();
         map<int,int>m;
         int cnt=0,maxi=0;
