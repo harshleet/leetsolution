@@ -1,18 +1,28 @@
 class Solution {
 public:
-
     int firstMissingPositive(vector<int>& nums) {
-       map<int,int>m;
-       int maxi=INT_MIN;
-       for(int i=0;i<nums.size();i++){
-        m[nums[i]]++;
-        maxi=max(maxi,nums[i]);
-       }
-       for(int i=1;i<=max(1,maxi);i++){
-        if(m.find(i)==m.end()){
-            return i;
+        vector<int>arr;
+        for(int j=0;j<nums.size();j++){
+            if(nums[j]>0){
+                arr.push_back(nums[j]);
+            }
         }
-       }
-       return maxi+1;
+        
+        int i = 0;
+        while (i < arr.size()) {
+            int correct = arr[i] - 1;
+            if (arr[i]<arr.size() && arr[i] != arr[correct]) {
+                swap(arr[i], arr[correct]);
+            } else {
+                i++;
+            }
+        }
+        for(int j=0;j<arr.size();j++){
+            cout<<arr[j]<<" ";
+            if(arr[j]!=j+1){
+                return j+1;
+            }
+        }
+        return arr.size()+1;
     }
 };
