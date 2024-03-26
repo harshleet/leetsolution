@@ -11,7 +11,7 @@ public:
         int i = 0;
         while (i < arr.size()) {
             int correct = arr[i] - 1;
-            if (arr[i]<=arr.size() && arr[i] != arr[correct]) {
+            if (correct<arr.size() && arr[i] != arr[correct]) {
                 swap(arr[i], arr[correct]);
             } else {
                 i++;
