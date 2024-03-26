@@ -18,7 +18,7 @@ public:
             }
         }
         for(int j=0;j<arr.size();j++){
-            cout<<arr[j]<<" ";
+           
             if(arr[j]!=j+1){
                 return j+1;
             }
