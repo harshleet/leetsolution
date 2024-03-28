@@ -5,7 +5,7 @@ public:
         map<int,int>m;
        while(i<nums.size()){
             m[nums[i]]++;
-            while(m[nums[i]]>k){
+            while(m[nums[i]]>k && j<i){
                m[nums[j]]--;
                j++;
             }
