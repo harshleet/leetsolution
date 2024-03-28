@@ -6,8 +6,8 @@ public:
        while(i<nums.size()){
             m[nums[i]]++;
             while(m[nums[i]]>k && j<i){
-               m[nums[j]]--;
-               j++;
+               m[nums[j++]]--;
+             
             }
             maxi=max(maxi,i-j+1);
             i++;
