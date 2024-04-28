@@ -10,6 +10,10 @@ public:
         return ans;
     }
     long long minEnd(int n, int x) {
+        //first intution is hard but you try the testcases on a copy it wis easy
+
+        //keep in mind that 1 in this remain intact what changes is the position whre their is zero's
+        // yt -> https://www.youtube.com/watch?v=eA1xIDUqIDc
         string mask=bitset<63>(x).to_string();
         string mask2=bitset<63>(n-1).to_string();
         int j=mask2.size()-1;
