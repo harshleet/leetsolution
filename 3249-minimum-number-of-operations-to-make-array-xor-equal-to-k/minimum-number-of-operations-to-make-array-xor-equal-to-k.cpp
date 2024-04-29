@@ -14,18 +14,18 @@ public:
         int c=0;
         string b=bitset<31>(k).to_string();
        
-        if(n==1){
+        // if(n==1){
             
-            for(int i=0;i<31;i++){
+        //     for(int i=0;i<31;i++){
             
-                if(b[i]=='1' && m[i]==0){
-                    c++;
-                }else if(b[i]=='0' && m[i]!=0){
-                    c++;
-                }
-            }
-            return c;
-        }
+        //         if(b[i]=='1' && m[i]==0){
+        //             c++;
+        //         }else if(b[i]=='0' && m[i]!=0){
+        //             c++;
+        //         }
+        //     }
+        //     return c;
+        // }
         for(int i=0;i<31;i++){
        
             if(b[i]=='0'  && (m[i])%2!=0){
