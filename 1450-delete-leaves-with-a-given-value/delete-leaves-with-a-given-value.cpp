@@ -20,6 +20,8 @@ public:
         dfs(root->left,target,root,0);
         dfs(root->right,target,root,1);
 
+          //try to remove ll those which are the leaf nodes and 
+          // and do this in postfix manner
         if(root->left==NULL && root->right==NULL && root->val==target){
             if(dir==0){
                 par->left=NULL;
@@ -32,6 +34,7 @@ public:
            //easy
            TreeNode* par=new TreeNode(0);
            par->left=root;
+           //create a temprory node as parent
            dfs(root,target,par,0);
            return par->left;
     }
