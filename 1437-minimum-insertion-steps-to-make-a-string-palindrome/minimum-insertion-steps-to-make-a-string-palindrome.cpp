@@ -1,25 +1,25 @@
 class Solution {
 public:
- int f(string& s1,string& s2,int i,int j,vector<vector<int>>&dp){
-           if(i<0 || j<0){
-               return 0;
-           }
-           if(dp[i][j]!=-1){
-               return dp[i][j];
-           }
-           int ntake=max(f(s1,s2,i-1,j,dp),f(s1,s2,i,j-1,dp));
-           int take=0;
-           if(s1[i]==s2[j]){
-               take=1+f(s1,s2,i-1,j-1,dp);
-           }
-           return dp[i][j]=max(ntake,take);
-
+    int helper(int ind1,int ind2,string &s1,string &s2,vector<vector<int>>&dp,int n){
+        if(ind1>=n ||ind2>=n){
+            return 0;
+        }
+        if(dp[ind1][ind2]!=-1){
+            return dp[ind1][ind2];
+        }
+        int in1=helper(ind1+1,ind2,s1,s2,dp,n);
+        int in2=helper(ind1,ind2+1,s1,s2,dp,n);
+        int nin=0;
+        if(s1[ind1]==s2[ind2]){
+            nin=1+helper(ind1+1,ind2+1,s1,s2,dp,n);
+        }
+        return dp[ind1][ind2]=max({in1,in2,nin});
     }
     int minInsertions(string s) {
-        string text1=s;
+        int n=s.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        string s1=s;
         reverse(s.begin(),s.end());
-        string text2=s;
-        vector<vector<int>>dp(text1.length(),vector<int>(text2.length(),-1));
-        return s.size()-f(text1,text2,text1.length()-1,text2.length()-1,dp);
+        return n-helper(0,0,s1,s,dp,n);
     }
 };
