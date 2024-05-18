@@ -10,21 +10,25 @@
  * };
  */
 class Solution {
-public: 
-    int helper(TreeNode* root,int &a){
+public:
+int ans=0;
+    int helper(TreeNode* root){
         if(root==NULL){
             return 0;
         }
-        int l=helper(root->left,a);
-        int r=helper(root->right,a);
-         a+=abs(l)+abs(r);//in distribution
-        return l+r+root->val-1;//nodes u can get uptill here
-     
+       
+        
+        int lh=helper(root->left);
+        int rh=helper(root->right);
+        // cout<<lh<<" "<<rh<<endl;
+        // if(lh+rh+root->val>1){
+        //     return lh+rh+root->val-1;
+        // }
+        ans+=abs(lh)+abs(rh);
+        return lh+rh+root->val-1;
     }
     int distributeCoins(TreeNode* root) {
-    
-        int a=0;
-        helper(root,a);
-        return a;
+        helper(root);
+        return ans;
     }
-};
+}; 
