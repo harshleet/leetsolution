@@ -6,7 +6,7 @@ public:
             return;
         }
         helper(ind + 1, nums, x, sum);
-      
+
         x ^= nums[ind];
         helper(ind + 1, nums, x, sum);
         x ^= nums[ind];
@@ -14,7 +14,19 @@ public:
     int subsetXORSum(vector<int>& nums) {
 
         int sum = 0;
-        helper(0, nums, 0, sum);
+        int cont = pow(2, nums.size() - 1);
+        int orr = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            orr |= nums[i];
+        }
+        int i=0;
+        while (orr!=0) {
+            if (orr & 1 == 1) {
+                sum += (cont * pow(2, i));
+            }
+            i++;
+            orr=orr>>1;
+        }
         return sum;
     }
 };
