@@ -6,7 +6,7 @@ public:
             return;
         }
         helper(ind + 1, nums, x, sum);
-        cout<<nums[ind]<<" ";
+      
         x ^= nums[ind];
         helper(ind + 1, nums, x, sum);
         x ^= nums[ind];
