@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void helper(int op, int cl, int n, string& ds, vector<string>& ans) {
+    void helper(int op, int cl, int n, string ds, vector<string>& ans) {
         if (op == n) {
             int prev=cl;
             while (cl < op) {
@@ -8,10 +8,7 @@ public:
                 cl++;
             }
             ans.push_back(ds);
-            while (prev<cl) {
-                ds.pop_back();
-                cl--;
-            }
+           
             return;
         }
 
