@@ -1,18 +1,14 @@
 class Solution {
 public:
-     bool isPalindrome(int st, int end, string& s, vector<vector<int>>& pal) {
-        if (st >= end) {
-            return true;
+    bool isPalindrome(int st, int end, string& s, vector<vector<int>>& pal) {
+        while (st < end) {
+            if (s[st] != s[end]) {
+                return false;
+            }
+            st++;
+            end--;
         }
-        if (pal[st][end] != -1) {
-            return pal[st][end];
-        }
-        if (s[st] != s[end]) {
-            pal[st][end] = 0;
-            return false;
-        }
-        return pal[st][end] = isPalindrome(st + 1, end - 1, s, pal);
-        
+        return true;
     }
     int helper(int ind, string& s, int n, vector<int>& dp,
                vector<vector<int>>& pal) {
@@ -24,7 +20,7 @@ public:
         }
         int mini = INT_MAX;
         for (int i = 1; i <= n - ind; i++) {
-            
+
             if (isPalindrome(ind, ind + i - 1, s, pal)) {
                 mini = min(mini, 1 + helper(ind + i, s, n, dp, pal));
             }
