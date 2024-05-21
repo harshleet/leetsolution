@@ -11,8 +11,8 @@ public:
             pal[st][end] = 0;
             return false;
         }
-        pal[st][end] = isPalindrome(st + 1, end - 1, s, pal);
-        return pal[st][end];
+        return pal[st][end] = isPalindrome(st + 1, end - 1, s, pal);
+        
     }
     int helper(int ind, string& s, int n, vector<int>& dp,
                vector<vector<int>>& pal) {
