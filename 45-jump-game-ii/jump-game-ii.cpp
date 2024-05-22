@@ -1,23 +1,37 @@
 class Solution {
 public:
-    int helper(int ind,vector<int>&nums,vector<int>&dp){
-         if(ind==nums.size()-1){
-            return 0;
-         }
-         if(dp[ind]!=-1){
-            return dp[ind];
-         }
-        int mini=1e8;
-        for(int i=ind+1;i<=ind+nums[ind];i++){
-           
-            if(i<nums.size()){
-              mini=min(mini,1+helper(i,nums,dp));
+    struct compare {
+        bool operator()(const std::pair<int, int>& p1,
+                        const std::pair<int, int>& p2) {
+            if (p1.first == p2.first) {
+                return p1.second > p2.second;
             }
+            return p1.first < p2.first;
         }
-        return dp[ind]=mini;
-    }
+    };
     int jump(vector<int>& nums) {
-        vector<int>dp(nums.size(),-1);
-        return helper(0,nums,dp);
+        if (nums.size() == 1) {
+            return 0;
+        }
+        // greeedy se try krte
+        priority_queue<pair<int, int>, vector<pair<int, int>>, compare> pq;
+
+        int ans = 0;
+        int l = 0, r = 0;
+        // if (r >= nums.size() - 1) {
+        //     return 1;
+        // }
+        while (r < nums.size()-1) {
+            int maxi = 0;
+            for (int i = l; i <= r; i++) {
+                maxi = max(maxi, nums[i] + i);
+            }
+
+            l = r + 1;
+            r = maxi;
+            ans++;
+        }
+
+        return ans;
     }
 };
