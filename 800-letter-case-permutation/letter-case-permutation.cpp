@@ -1,30 +1,25 @@
 class Solution {
 public:
-void helper(string ds,int ind,vector<string>&ans,string s){
-    if(ind>=s.size()){
-        if(!ds.empty()){
-            ans.push_back(ds);
+    void helper(int ind, string ds, set<string>& ans, string& s,
+                set<char>& num) {
+        if (ind >= s.size()) {
+            ans.insert(ds);
+            return;
         }
-        return;
-    }
-    if(isalpha(s[ind])){
-        if(isupper(s[ind])){
-              ds.push_back(tolower(s[ind]));
-              helper(ds,ind+1,ans,s);
-              ds.pop_back();
-        }else if(islower(s[ind])){
-              ds.push_back(toupper(s[ind]));
-              helper(ds,ind+1,ans,s);
-              ds.pop_back();
+        ds.push_back(tolower(s[ind]));
+        helper(ind + 1, ds,ans, s,num);
+        ds.pop_back();
+        if (num.find(s[ind]) == num.end()) {
+            ds.push_back(toupper(s[ind]));
+             helper(ind + 1, ds,ans,s,num);
+            ds.pop_back();
         }
     }
-        ds.push_back(s[ind]);
-        helper(ds,ind+1,ans,s);
-    
-}
     vector<string> letterCasePermutation(string s) {
-       vector<string>ans;
-       helper("",0,ans,s);
-       return ans;
+        set<char> num = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        string ds = "";
+        set<string> ans;
+        helper(0, ds, ans, s, num);
+        return vector<string>(ans.begin(),ans.end());
     }
 };
