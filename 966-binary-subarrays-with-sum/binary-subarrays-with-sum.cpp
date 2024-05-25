@@ -1,19 +1,19 @@
 class Solution {
 public:
-    int atmost(vector<int>&nums,int k){
-        int j=0,sum=0,size=0;
-
+    int atleast(int goal,vector<int>&nums){
+        int j=0,c=0,ans=0;
         for(int i=0;i<nums.size();i++){
-            sum+=nums[i];
-            while(j<=i && sum>k){
-                sum-=nums[j];
-                j++;
-            }
-            size+=(i-j+1);
+                c+=nums[i];
+                while(c>=goal && j<=i){
+                    ans+=nums.size()-i;
+                    c-=nums[j];
+                    j++;
+                }
         }
-            return size;
+        return ans;
     }
     int numSubarraysWithSum(vector<int>& nums, int goal) {
-        return atmost(nums,goal)-atmost(nums,goal-1);
+        //exact to nih kar skte we try to find the atleast value
+        return atleast(goal,nums)-atleast(goal+1,nums);
     }
 };
