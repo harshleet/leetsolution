@@ -6,15 +6,15 @@ public:
         int cnt=0;
         set<char> st;
         for (int i = 0; i < t.size(); i++) {
-            temp[t[i] - 'A']++;
+            m[t[i] - 'A']++;
             st.insert(t[i]);
         }
         int mini=INT_MAX;
         int minii=-1,  minij=-1;
         int j = 0;
         for (int i = 0; i < s.size(); i++) {
-            temp[s[i] - 'A']--;
-            if (st.find(s[i]) != st.end() && temp[s[i]-'A']==0) {   
+            m[s[i] - 'A']--;
+            if (st.find(s[i]) != st.end() && m[s[i]-'A']==0) {   
                 cnt++;
             }
 
@@ -26,8 +26,8 @@ public:
                     minii=i;
                     minij=j;
                 }
-                temp[s[j]-'A']++;
-                if(st.find(s[j])!=st.end() && temp[s[j]-'A']>0){
+                m[s[j]-'A']++;
+                if(st.find(s[j])!=st.end() && m[s[j]-'A']>0){
                     cnt--;
                 }
                 j++;
