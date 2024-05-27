@@ -8,8 +8,8 @@ public:
         if (to >= n) {
             return 1;
         }
-        if (dp[ab][la][to] != -1) {
-            return dp[ab][la][to];
+        if (dp[to][la][ab] != -1) {
+            return dp[to][la][ab];
         }
         long long ans =0;
         ans= (ans+helper(to + 1, ab, 0, n, dp))%mod;
@@ -19,11 +19,11 @@ public:
         if (ab < 1) {
             ans =(ans+  helper(to + 1, ab + 1, 0, n, dp))%mod;
         }
-        return dp[ab][la][to] = ans%mod;
+        return dp[to][la][ab] = ans%mod;
     }
     int checkRecord(int n) {
         vector<vector<vector<int>>> dp(
-            2, vector<vector<int>>(3, vector<int>(n, -1)));
+            n, vector<vector<int>>(3, vector<int>(2, -1)));
         return helper(0, 0, 0, n, dp);
     }
 };
