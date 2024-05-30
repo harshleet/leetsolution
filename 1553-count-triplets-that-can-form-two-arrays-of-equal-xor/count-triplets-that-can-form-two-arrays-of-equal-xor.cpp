@@ -1,22 +1,19 @@
 class Solution {
 public:
     int countTriplets(vector<int>& arr) {
-        int ans=0;
+        int ans=0,n=arr.size();
+        vector<int>pre(n+1);
+        pre[0]=0;
+        for(int i=0;i<n;i++){
+            pre[i+1]=pre[i]^arr[i];
+            // cout<<pre[i+1]<<endl;
+        }
         for(int i=0;i<arr.size();i++){
+            // txor^=arr[i];
             for(int k=i+1;k<arr.size();k++){
-                int a=0,b=0,txor=0;
-                for(int j=i;j<=k;j++){
-                   txor^=arr[j];
-                }
-                for(int j=i+1;j<=k;j++){
-                    
-                    a^=arr[j];
-                    txor^=arr[j];
-                    b=txor;
-                    if(a==b){
-                      
-                        ans++;
-                    }
+                int x=pre[i]^pre[k+1];
+                if(x==0){
+                    ans+=k-i;
                 }
             }
             
