@@ -1,5 +1,6 @@
 class Solution {
 public:
+//full explnation https://www.youtube.com/watch?v=UA5JnV1J2sI
     vector<int> singleNumber(vector<int>& nums) {
         int val=0,n=nums.size();
         for(int i=0;i<n;i++){
