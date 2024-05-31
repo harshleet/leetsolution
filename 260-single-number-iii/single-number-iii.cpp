@@ -1,21 +1,27 @@
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        vector<int>ans;
-        int i=0;
-        for( i=0;i<nums.size()-1;i++){
-            if((nums[i]^nums[i+1])!=0){
-                ans.push_back(nums[i]);
-            }else{
-                i++;
-            }
+        int val=0,n=nums.size();
+        for(int i=0;i<n;i++){
+            val^=nums[i];
         }
-        cout<<i<<" ";
-        if (i == nums.size() - 1) {
-              ans.push_back(nums[i]);
-          }
-        
-        return ans;
+        // cout<<val<<endl;
+        int rb=0;
+        while((val &(1<<rb))==0){
+            rb++;
+        }
+
+        int b1=0,b2=0;
+        for(int i=0;i<n;i++){
+            
+             if((nums[i]&(1<<rb))==0){
+                   b1^=nums[i];
+             }else{
+                cout<<nums[i]<<endl;
+                b2^=nums[i];
+             }
+        }
+        return {b1,b2};
+
     }
-};
+}; 
