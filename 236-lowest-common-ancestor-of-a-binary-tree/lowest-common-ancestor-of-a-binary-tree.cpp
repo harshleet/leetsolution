@@ -13,26 +13,28 @@ public:
         if(root==NULL){
             return NULL;
         }
-        
-        TreeNode* l=helper(root->left,p,q);
-        TreeNode* r=helper(root->right,p,q);
-        if(root->val==p->val){
-            return p;
-        }
-        if(root->val==q->val){
-            return q;
-        }
-        if(l==NULL && r==NULL){
-            return NULL;
-        }
-        if(l!=NULL && r!=NULL){
+        TreeNode* lp=helper(root->left,p,q);
+        TreeNode* rp=helper(root->right,p,q);
+        if(lp!=NULL && rp!=NULL){
             return root;
         }
-        if(l==NULL){
-            return r;
+
+        if(root==p && (lp!=NULL && rp!=NULL)){
+            return root;
         }
-        return l;
-        
+        if(root==q && (lp!=NULL && rp!=NULL)){
+            return root;
+        }
+        if(root==p ||root==q){
+            return root;
+        }
+        if(lp!=NULL){
+            return lp;
+        }
+        if(rp!=NULL){
+            return rp;
+        }
+        return NULL;
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         return helper(root,p,q);
