@@ -11,22 +11,22 @@
  */
 class Solution {
 public:
-    TreeNode* helper(int pst,int pend,int ist,int iend,vector<int>& preorder, vector<int>& inorder,map<int,int>&m){
-       if(pst>pend || ist>iend ){
-        return NULL;
-       } 
-       TreeNode* root=new TreeNode(preorder[pst]);
-       int val=m[preorder[pst]];
-       int noleft=val-ist;
-       root->left=helper(pst+1,pst+noleft,ist,val-1,preorder,inorder,m);
-       root->right=helper(pst+noleft+1,pend,val+1,iend,preorder,inorder,m);
-       return root;
+    TreeNode* construct(int ps,int pe,int is,int ie,vector<int>& preorder, vector<int>& inorder){
+        if(ps>pe || is>ie){
+            return NULL;
+        }
+        int root_val=preorder[ps];
+        TreeNode* root=new TreeNode(root_val);
+        int pi=0;
+        while(inorder[pi]!=root_val){
+            pi++;
+        }
+        // cout<<ps+1<<" "<<ps+pi-is<<" "<<is<<" "<<pi-1<<endl;
+        root->left=construct(ps+1,ps+pi-is,is,pi-1,preorder,inorder);
+        root->right=construct(ps+pi-is+1,pe,pi+1,ie,preorder,inorder);
+        return root;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        map<int,int>m;
-        for(int i=0;i<inorder.size();i++){
-              m[inorder[i]]=i;
-        }
-        return helper(0,preorder.size()-1,0,inorder.size()-1,preorder,inorder,m);
+        return construct(0,preorder.size()-1,0,inorder.size()-1,preorder,inorder);
     }
 };
