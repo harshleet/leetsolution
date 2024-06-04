@@ -42,7 +42,25 @@ public:
         create_adj(adj, root);
         map<int, int> vis;
         int ans=0;
-        dfs(start, adj, 0, vis, ans);
-        return ans;
+        // dfs(start, adj, 0, vis, ans);
+        queue<int>q;
+        q.push(start);
+        vis[start]=1;
+        while(!q.empty()){
+            int n=q.size();
+            
+            for(int i=0;i<n;i++){
+                int node=q.front();
+                q.pop();
+                for(auto it:adj[node]){
+                    if(vis.find(it)==vis.end()){
+                       vis[it]=1;
+                        q.push(it);
+                    }
+                }
+            }
+            ans++;
+        }
+        return ans-1;
     }
 };
