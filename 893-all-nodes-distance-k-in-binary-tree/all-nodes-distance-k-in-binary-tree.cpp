@@ -9,48 +9,45 @@
  */
 class Solution {
 public:
-  void helper(TreeNode* root,map<int,vector<int>>&adj){
-      if(root==NULL){
-          return;
-      }
-      if(root->left!=NULL){
-           adj[root->val].push_back(root->left->val);
-           adj[root->left->val].push_back(root->val);
-      }
-      if(root->right!=NULL){
-           adj[root->val].push_back(root->right->val);
-           adj[root->right->val].push_back(root->val);
-      }
-      helper(root->left,adj);
-      helper(root->right,adj);
-  }
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        //make th graph
-        if(root==NULL){
-            return {};
+    void create_adj(map<TreeNode*, vector<TreeNode*>>& adj, TreeNode* root) {
+        if (root == NULL) {
+            return;
         }
-        map<int,vector<int>>adj;
-        helper(root,adj);
-        vector<int>ans;
-        queue<pair<int,int>>q;
-        q.push({target->val,0});
-        map<int,int>vis;
-        while(!q.empty()){
-            int node=q.front().first;
-            int dis=q.front().second;
-             q.pop();
-            vis[node]=1;
-            if(dis==k){
-                ans.push_back(node);
-            }
+        if (root->left != NULL) {
+            adj[root].push_back(root->left);
+            adj[root->left].push_back(root);
+        }
+        if (root->right != NULL) {
+            adj[root].push_back(root->right);
+            adj[root->right].push_back(root);
+        }
+        create_adj(adj, root->left);
+        create_adj(adj, root->right);
+    }
+    void dfs(TreeNode* root, map<TreeNode*, vector<TreeNode*>>& adj, int k,
+             map<TreeNode*, int>& vis, vector<int>& ans) {
+        if (root == NULL) {
+            return ;
+        }
+        vis[root]=1;
+        if (k == 0) {
            
-            for(auto it:adj[node]){
-                if(vis.find(it)==vis.end()){
-                      q.push({it,dis+1});
-                }
-               
+            ans.push_back(root->val);
+        }
+        
+        for (auto it : adj[root]) {
+            if (vis.find(it) == vis.end()) {
+                dfs(it, adj, k - 1, vis, ans);
             }
         }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+
+        map<TreeNode*, vector<TreeNode*>> adj;
+        create_adj(adj, root);
+        map<TreeNode*, int> vis;
+        vector<int> ans;
+        dfs(target, adj, k, vis, ans);
         return ans;
     }
 };
