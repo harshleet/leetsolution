@@ -29,7 +29,11 @@ public:
         if (root == NULL) {
             return ;
         }
-        vis[root]=1;
+           vis[root]=1;
+        if(k<0){
+            return;
+        }
+     
         if (k == 0) {
            
             ans.push_back(root->val);
