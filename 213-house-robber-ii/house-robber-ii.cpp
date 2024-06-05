@@ -11,9 +11,7 @@ public:
         int t = 0;
         if (ind == 0) {
             t=nums[ind] + helper(ind + 2, dp, nums,1);
-        }else if(ind==nums.size()-1 && f==1 ){
-            t=0;
-        }else{
+        }else if(ind!=nums.size()-1 || f!=1 ){
             t=nums[ind]+helper(ind+2,dp,nums,f);
         }
         return dp[ind][f] = max(t, nt);
