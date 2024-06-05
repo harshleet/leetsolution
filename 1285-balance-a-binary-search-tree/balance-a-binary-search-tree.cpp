@@ -11,29 +11,27 @@
  */
 class Solution {
 public:
- TreeNode* maker(vector<int>& num,int si,int ei){
-        if(si>=num.size()|| si>ei ||ei<0){
-            return NULL;
-        }
-        int index=(si+ei)/2;
-        TreeNode* root= new TreeNode(num[index]);
-        root->left=maker(num,si,index-1);
-        root->right=maker(num,index+1,ei);
-        return root;
-    }
-    void dfs(TreeNode* root,vector<int>&val){
+    void inorder(TreeNode* root,vector<int>&in){
         if(root==NULL){
             return;
         }
-        val.push_back(root->val);
-        dfs(root->left,val);
-        dfs(root->right,val);
+        inorder(root->left,in);
+        in.push_back(root->val);
+        inorder(root->right,in);
+    }
+    TreeNode* construct(int st,int en,vector<int>&in){
+        if(st>en){
+            return NULL;
+        }
+        int mid=(st+en)/2;
+        TreeNode* root=new TreeNode(in[mid]);
+        root->left=construct(st,mid-1,in);
+        root->right=construct(mid+1,en,in);
+        return root;
     }
     TreeNode* balanceBST(TreeNode* root) {
-        vector<int>val;
-        dfs(root,val);
-        sort(val.begin(),val.end());
-        int si=0,ei=val.size()-1;
-         return maker(val,si,ei);
+        vector<int>in;
+        inorder(root,in);
+        return construct(0,in.size()-1,in);
     }
 };
