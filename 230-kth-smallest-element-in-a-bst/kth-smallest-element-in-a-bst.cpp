@@ -11,19 +11,24 @@
  */
 class Solution {
 public:
-void helper(TreeNode* root,vector<int>&v){
-    if(root==NULL){
-        return;
+    int count(TreeNode* root){
+        if(root==NULL){
+            return 0;
+        }
+        return 1+count(root->left)+count(root->right);
     }
-   
-    helper(root->left,v);
-     v.push_back(root->val);
-    helper(root->right,v);
-}
     int kthSmallest(TreeNode* root, int k) {
-        vector<int>v;
-        helper(root,v);
-       
-        return v[k-1];
+        if(root==NULL){
+            return 0;
+        }
+        int l=count(root->left);
+        int r=count(root->right);
+        cout<<l<<" "<<r<<endl;
+        if(k==l+1){
+            return root->val;
+        }
+        if(k<=l){
+           return kthSmallest(root->left,k);
+        } return kthSmallest(root->right,k-l-1);
     }
 };
