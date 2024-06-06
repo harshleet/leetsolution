@@ -1,21 +1,26 @@
 class Solution {
 public:
-  int rec(int i,int j,vector<vector<int>>&dp){
-      if(i==0 && j==0){
-          return 1;
-      }
-      if(i<0 || j<0){
-          return 0;
-      }
-      if(dp[i][j]!=-1){
-          return dp[i][j];
-      }
-      int right=rec(i-1,j,dp);
-     int down=rec(i,j-1,dp);
-     return dp[i][j]=(right+down);
-  }
+vector<int>dr={1,0};
+vector<int>dc={0,1};
+    int helper(int r,int c,int m,int n,vector<vector<int>>&dp){
+        if(r==m-1 && c==n-1){
+            return 1;
+        }
+        if(dp[r][c]!=-1){
+            return dp[r][c];
+        }
+        int ans=0;
+        for(int i=0;i<2;i++){
+            int nr=r+dr[i];
+            int nc=c+dc[i];
+            if(r>=0 && nc>=0 && nr<m && nc<n){
+                  ans+=helper(nr,nc,m,n,dp); 
+            }
+        }
+        return dp[r][c]=ans;
+    }
     int uniquePaths(int m, int n) {
         vector<vector<int>>dp(m,vector<int>(n,-1));
-        return rec(m-1,n-1,dp);
+        return helper(0,0,m,n,dp);
     }
 };
