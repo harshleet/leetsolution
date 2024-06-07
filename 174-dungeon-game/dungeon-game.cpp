@@ -19,7 +19,7 @@ public:
         int mleft=helper(r,c+1,dungeon,n,m,dp);
         
         int val=min(mright,mleft)-dungeon[r][c];
-        cout<<r<<" "<<c<<" "<<val<<endl;
+       
         if(val<=0){
             return dp[r][c]=1; 
         }
