@@ -1,23 +1,28 @@
 class Solution {
 public:
-    int f(int i,int j,vector<int>& cuts,vector<vector<int>>&dp){
-        if(i>j)return 0;
-        int mini=1e9;
-        if(dp[i][j]!=-1){
-            return dp[i][j];
+    int helper(int st,int end,int len,vector<int>&cut,vector<vector<int>>&dp){
+        if(st>end){
+            return 0;
         }
-        for(int k=i;k<=j;k++){
-            int cost=cuts[j+1]-cuts[i-1]+f(i,k-1,cuts,dp)+f(k+1,j,cuts,dp);
-            mini=min(mini,cost);
+        if(dp[st][end]!=-1){
+            return dp[st][end];
         }
-        return dp[i][j]=mini;
+         int mini=1e8;
+        for(int i=st;i<=end;i++){
+            
+                int c=(cut[end+1]-cut[st-1])+helper(st,i-1,len,cut,dp)+helper(i+1,end,len,cut,dp);
+                mini=min(mini,c);
+    
+        }
+        
+        return dp[st][end]=mini;
     }
     int minCost(int n, vector<int>& cuts) {
-        int a=cuts.size();
+       
         cuts.push_back(n);
         cuts.insert(cuts.begin(),0);
         sort(cuts.begin(),cuts.end());
-        vector<vector<int>>dp(a+1,vector<int>(a+1,-1));
-        return f(1,a,cuts,dp);
+         vector<vector<int>>dp(cuts.size(),vector<int>(cuts.size(),-1));
+        return helper(1,cuts.size()-2,n,cuts,dp);
     }
 };
