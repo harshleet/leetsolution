@@ -1,20 +1,33 @@
 class Solution {
 public:
-    void sortColors(vector<int>& nums) {
-        int s=0,m=0,e=nums.size()-1;
-        while(m<=e){
-            if(nums[m]==0){
-                swap(nums[s],nums[m]);
-                s++;
-                m++;
-            }else if(nums[m]==1 ){
-                m++;
-            }else{
-                swap(nums[m],nums[e]);
-                e--;
+    int helper(int low,int high,vector<int>&nums){
+        int i=low;
+        int j=high;
+        int pivot=nums[low];
+
+        while(i<j){
+            while(pivot>=nums[i] && i<high){
+                i++;
+            }
+            while(pivot<nums[j] && j>low){
+                j--;
+            }
+            if(i<j){
+                swap(nums[i],nums[j]);
             }
         }
-        
-
+        swap(nums[low],nums[j]);
+        return j;
+    }
+    void quick_sort(int low,int high,vector<int>&nums){
+        if(low<high){
+            int p=helper(low,high,nums);
+            quick_sort(low,p-1,nums);
+            quick_sort(p+1,high,nums);
+        }
+    }
+    void sortColors(vector<int>& nums) {
+        quick_sort(0,nums.size()-1,nums);
+        return;
     }
 };
