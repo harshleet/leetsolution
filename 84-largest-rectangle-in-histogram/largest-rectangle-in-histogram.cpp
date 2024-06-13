@@ -1,35 +1,61 @@
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
+        //find previos smaller and next smaller
+        //now just do it
         int n=heights.size();
-        vector<int>preS(n,-1);
-        vector<int>nextS(n,-1);
+        vector<int>ps(n,-1);
+        vector<int>ns(n,-1);
         stack<int>st;
         for(int i=0;i<n;i++){
-            while(!st.empty() && heights[st.top()]>=heights[i]){
-                nextS[st.top()]=i;
-                st.pop();
+            if(st.empty() || heights[st.top()]<heights[i]){
+                if(!st.empty()){
+                    ps[i]=st.top();
+                }
+                st.push(i);
+            }else{
+                while(!st.empty() && heights[st.top()]>=heights[i]){
+                    st.pop();
+                }
+                if(!st.empty()){
+                    ps[i]=st.top();
+                }
+                st.push(i);
             }
-            if(!st.empty()){
-                preS[i]=st.top();
+        }
+         while (!st.empty()) {
+            st.pop();
+        }
+        for(int i=n-1;i>=0;i--){
+            if(st.empty() || heights[st.top()]<heights[i]){
+                if(!st.empty()){
+                    ns[i]=st.top();
+                }
+                st.push(i);
+            }else{
+                while(!st.empty() && heights[st.top()]>=heights[i]){
+                    st.pop();
+                }
+                if(!st.empty()){
+                    ns[i]=st.top();
+                }
+                st.push(i);
             }
-            st.push(i);
+        }
+        for(int i=0;i<n;i++){
+            cout<<ps[i]<<" ";
+        }
+        cout<<endl;
+        for(int i=0;i<n;i++){
+            cout<<ns[i]<<" ";
         }
         int maxi=0;
         for(int i=0;i<n;i++){
-            int sel=heights[i];
-            
-            if(preS[i]!=-1){
-                sel+=heights[i]*(i-preS[i]-1);
-            }else if(preS[i]==-1){
-                 sel+=heights[i]*(i);
+            int lo=ps[i],hi=ns[i];
+            if(hi==-1){
+                hi=n;
             }
-            if(nextS[i]!=-1){
-                sel+=heights[i]*(nextS[i]-i-1);
-            }else if(nextS[i]==-1){
-                 sel+=heights[i]*(n-i-1);
-            }
-            maxi=max(maxi,sel);
+            maxi=max(maxi,(hi-lo-1)*heights[i]);
         }
         return maxi;
     }
