@@ -42,13 +42,13 @@ public:
                 st.push(i);
             }
         }
-        for(int i=0;i<n;i++){
-            cout<<ps[i]<<" ";
-        }
-        cout<<endl;
-        for(int i=0;i<n;i++){
-            cout<<ns[i]<<" ";
-        }
+        // for(int i=0;i<n;i++){
+        //     cout<<ps[i]<<" ";
+        // }
+        // cout<<endl;
+        // for(int i=0;i<n;i++){
+        //     cout<<ns[i]<<" ";
+        // }
         int maxi=0;
         for(int i=0;i<n;i++){
             int lo=ps[i],hi=ns[i];
