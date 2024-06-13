@@ -1,39 +1,27 @@
 class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
-        stack<int> s;
-        int n = asteroids.size();
-
-        for (int i = 0; i < n; i++) {
-            if(s.empty() ||(asteroids[i]>=0) ){
-                s.push(asteroids[i]);
+        stack<int>st;
+        for(int i=0;i<asteroids.size();i++){
+            if(st.empty() || st.top()*asteroids[i]>0 || (st.top()<0 && asteroids[i]>0)){
+               st.push(asteroids[i]);
+            }else{
+                while(!st.empty() && st.top()*asteroids[i]<0 && abs(st.top())<abs(asteroids[i])){
+                    st.pop();
+                }
+                if(!st.empty() && st.top()*asteroids[i]<0 && abs(st.top())==abs(asteroids[i])){
+                    st.pop();
+                }else if(st.empty() ||  st.top()*asteroids[i]>0){
+                    st.push(asteroids[i]);
+                }
             }
-             else if(s.top()>abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
-                continue;
-               }else{
-               
-                   while( !s.empty()&& s.top()<abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
-                       s.pop();
-                   }
-                    if(!s.empty()&& s.top()>abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
-                       continue;
-                   }
-                   if(!s.empty()&& s.top()==abs(asteroids[i]) && (s.top()*asteroids[i]<0)){
-                       s.pop();
-                       continue;
-                   }
-                   s.push(asteroids[i]);
-                   
-                   
-                  
-               }   
         }
-        vector<int>result;
-        while(!s.empty()){
-            result.push_back(s.top());
-            s.pop();
+        vector<int>ans;
+        while(!st.empty()){
+            ans.push_back(st.top());
+            st.pop();
         }
-        reverse(result.begin(),result.end());
-        return result;
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 };
