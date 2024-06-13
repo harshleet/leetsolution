@@ -1,32 +1,33 @@
 class Solution {
 public:
-  int helper(int ind,int o,int z,vector<string>& strs, int m, int n,map<int,int>&m1,map<int,int>&m2,vector<vector<vector<int>>>&dp){
-    if(ind>=strs.size()){
-      return 0;
-    }
-    if(dp[ind][o][z]!=-1){
-        return dp[ind][o][z];
-    }
-    int ntake=helper(ind+1,o,z,strs,m,n,m1,m2,dp);
-    int take=-1e9;
-    if(o+m1[ind]<=n && z+m2[ind]<=m){
-        take=1+helper(ind+1,o+m1[ind],z+m2[ind],strs,m,n,m1,m2,dp);
-    }  
-    return dp[ind][o][z]=max(take,ntake);
-  }
+   int helper(int ind,vector<string>&strs,int m,int n,map<int,int>&on,map<int,int>&ze,vector<vector<vector<int>>>&dp){
+      if(ind>=strs.size()){
+        // cout<<m<<" "<<n<<endl;
+        return 0;
+      }  
+      if(dp[ind][m][n]!=-1){
+        return dp[ind][m][n];
+      }
+      int nt=helper(ind+1,strs,m,n,on,ze,dp);
+      int t=0;
+      if(m-ze[ind]>=0 && n-on[ind]>=0){
+        t=1+helper(ind+1,strs,m-ze[ind],n-on[ind],on,ze,dp);
+      }
+      return dp[ind][m][n]=max(t,nt);
+   }
     int findMaxForm(vector<string>& strs, int m, int n) {
-        map<int,int>m1;
-        map<int,int>m2;
+        map<int,int>on;
+        map<int,int>ze;
         for(int i=0;i<strs.size();i++){
             for(int j=0;j<strs[i].size();j++){
-                if(strs[i][j]=='1'){
-                    m1[i]++;
+                if(strs[i][j]=='0'){
+                    ze[i]++;
                 }else{
-                      m2[i]++;
+                    on[i]++;
                 }
             }
         }
-        vector<vector<vector<int>>>dp(strs.size(),vector<vector<int>>(n+1,vector<int>(m+1,-1)));
-        return helper(0,0,0,strs,m,n,m1,m2,dp);
+        vector<vector<vector<int>>>dp(strs.size(),vector<vector<int>>(m+1,vector<int>(n+1,-1)));
+        return helper(0,strs,m,n,on,ze,dp);
     }
 };
