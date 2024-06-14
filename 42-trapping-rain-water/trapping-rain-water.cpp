@@ -15,7 +15,6 @@ public:
         }
         int ans=0;
         for(int i=0;i<n;i++){
-            cout<<maxl[i]<<" "<<maxr[i]<<endl;
             if(maxl[i]!=-1 && maxr[i]!=-1){
                 int mini=min(maxl[i],maxr[i]);
                 ans+=mini-nums[i];
