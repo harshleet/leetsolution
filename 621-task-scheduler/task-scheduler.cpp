@@ -25,7 +25,7 @@ public:
             }
             ans+=n;
             for(int i=0;i<temp.size();i++){
-                cout<<temp[i].first<<" "<<ans<<endl;
+                // cout<<temp[i].first<<" "<<ans<<endl;
                 if(temp[i].first>1){
                    pq.push({temp[i].first-1,temp[i].second});
                 }
