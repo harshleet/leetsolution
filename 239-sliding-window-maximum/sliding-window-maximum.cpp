@@ -1,22 +1,32 @@
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-        map<int,int>m;
+        deque<pair<int,int>>dq;
         for(int i=0;i<k;i++){
-            m[nums[i]]++;
-        }
-         vector<int>ans;
-        if(!m.empty())
-              ans.push_back((--m.end())->first);
-       
-        for(int i=k;i<nums.size();i++){
-            m[nums[i-k]]--;
-            if(m[nums[i-k]]==0){
-                m.erase(nums[i-k]);
+            if(dq.empty() || dq.front().first>nums[i]){
+                dq.push_front({nums[i],i});
+            }else{
+                while(!dq.empty()&& dq.front().first<=nums[i]){
+                    dq.pop_front();
+                }
+                dq.push_front({nums[i],i});
             }
-            m[nums[i]]++;
-            if(!m.empty())
-              ans.push_back((--m.end())->first);
+        }
+        vector<int>ans;
+        ans.push_back(dq.back().first);
+        for(int i=k;i<nums.size();i++){
+            if(dq.back().second==i-k){
+                dq.pop_back();
+            }
+            if(dq.empty() || dq.front().first>nums[i]){
+                dq.push_front({nums[i],i});
+            }else{
+                while(!dq.empty()&& dq.front().first<=nums[i]){
+                    dq.pop_front();
+                }
+                dq.push_front({nums[i],i});
+            }
+            ans.push_back(dq.back().first);
         }
         return ans;
     }
