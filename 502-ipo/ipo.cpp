@@ -26,7 +26,6 @@ public:
             }
             if(!pq.empty()){
                 w+=pq.top();
-                ans+=pq.top();
                 pq.pop();
             }
         }
