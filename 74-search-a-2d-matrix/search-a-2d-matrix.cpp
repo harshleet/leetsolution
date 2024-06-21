@@ -1,32 +1,31 @@
 class Solution {
 public:
-    bool binarySearch(int row,vector<vector<int>>& matrix,int target){
-        int low=0,high=matrix[row].size()-1;
-        while(low<=high){
-            int mid=(low+high)/2;
-            if(matrix[row][mid]==target ){
+    bool search(int row,vector<vector<int>>&matrix,int target){
+        int l=0,h=matrix[0].size()-1;
+
+        while(l<=h){
+            int mid=(l+h)/2;
+            if(target==matrix[row][mid]){
                 return true;
-            }
-            else if(matrix[row][mid]>target){
-                high=mid-1;
-            }else {
-                low=mid+1;
+            }else if(target<matrix[row][mid]){
+                h=mid-1;
+            }else{
+                l=mid+1;
             }
         }
         return false;
     }
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int low=0,high=matrix.size()-1;
-        while(low<=high){
-            int mid=(low+high)/2;
-            if(matrix[mid][0]<=target && matrix[mid].back()>=target){
-                bool a=binarySearch(mid,matrix,target);
-                return a;
-            }
-            else if(matrix[mid][0]>target){
-                high=mid-1;
-            }else if(matrix[mid].back()<target){
-                low=mid+1;
+        int l=0,h=matrix.size()-1;
+        int n=matrix.size(),m=matrix[0].size();
+        while(l<=h){
+            int mid=(l+h)/2;
+            if(target>=matrix[mid][0] && target<=matrix[mid].back()){
+                return search(mid,matrix,target);
+            }else if(target<matrix[mid][0]){
+                h=mid-1;
+            }else if(target>matrix[mid].back()){
+                l=mid+1;
             }
         }
         return false;
