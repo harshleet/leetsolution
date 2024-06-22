@@ -12,7 +12,7 @@ public:
         for(int i=ind+1;i<=2*(ind+1);i++){
             mini=min(mini,helper(i,prices,dp));
         }
-        ;
+        
        
         return dp[ind]=pur+mini;
     }
