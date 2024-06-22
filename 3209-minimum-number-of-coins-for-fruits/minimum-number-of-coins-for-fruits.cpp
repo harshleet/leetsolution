@@ -1,22 +1,24 @@
 class Solution {
 public:
-    int helper(int ind,int p,vector<int>&prices,vector<vector<int>>&dp){
+    int helper(int ind,vector<int>&prices,vector<int>&dp){
         if(ind>=prices.size()){
             return 0;
         }
-        if(dp[ind][p]!=-1){
-            return dp[ind][p];
+        if(dp[ind]!=-1){
+            return dp[ind];
         }
-        int pur=prices[ind]+helper(ind+1,ind+1,prices,dp);
-        int npur=INT_MAX;
-        if(p>0){
-            npur=helper(ind+1,p-1,prices,dp);
+        int pur=prices[ind];
+        int mini=INT_MAX;
+        for(int i=ind+1;i<=2*(ind+1);i++){
+            mini=min(mini,helper(i,prices,dp));
         }
-        return dp[ind][p]=min(pur,npur);
+        ;
+       
+        return dp[ind]=pur+mini;
     }
     int minimumCoins(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<int>>dp(n,vector<int>(n+1,-1));
-        return helper(0,0,prices,dp);
+        vector<int>dp(n,-1);
+        return helper(0,prices,dp);
     }
 };
