@@ -11,35 +11,39 @@
  */
 class Solution {
 public:
-    TreeNode* first=NULL;
-    TreeNode* second=NULL;
-    TreeNode* third=NULL;
-    TreeNode* prev;
-    void inorder(TreeNode* root){
+TreeNode* f=NULL;
+TreeNode* s=NULL;
+TreeNode* t=NULL;
+TreeNode* pre=NULL;
+   void helper(TreeNode* root){
         if(root==NULL){
-            return;
+            return ;
         }
-        inorder(root->left);
-       
-        if(second==NULL && prev->val>root->val){
-            first=prev;
-            second=root;
-        }else if(second!=NULL && prev->val>root->val){
-          third=root;
+        // cout<<root->val<<" "<<maxi<<" "<<mini<<endl;
+        
+        helper(root->left);
+        if(pre!=NULL && root->val<pre->val){
+            if(f==NULL){
+                f=pre;
+                s=root;
+            }else{
+                t=root;
+            }
         }
-        prev=root;
-        inorder(root->right);
+        pre=root;
+        helper(root->right);
+        // return root;
 
-    }
+   }
     void recoverTree(TreeNode* root) {
-        prev=new TreeNode(INT_MIN);
-        inorder(root);
-          if( third==NULL){
-              cout<<first->val<<endl;
-              swap(first->val,second->val);
-          }else if( third!=NULL){
-              cout<<first->val<<" "<<second->val<<" "<<third->val<<endl;
-              swap(first->val,third->val);
-          } 
+        helper(root);
+        if(f!=NULL && s!=NULL && t==NULL){
+            swap(f->val,s->val);
+            // cout<<f->val<<" "<<s->val<<endl;
+        }
+        if(t!= NULL){
+            swap(f->val,t->val);
+        }
+       
     }
 };
