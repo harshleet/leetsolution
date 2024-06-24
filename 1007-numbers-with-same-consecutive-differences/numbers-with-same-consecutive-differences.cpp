@@ -1,27 +1,24 @@
 class Solution {
 public:
-   void helper(int val,int pre,int dig,set<int>&ans,int n,int k){
-       if(dig==n){
-          ans.insert(val);
-          return ;
-       }
-      if(pre==-1){
-        for(int i=1;i<=9;i++){
-            helper(val*10+i,i,dig+1,ans,n,k);
-        }
-        return;
-      }
-      if(pre+k<=9){
-        helper(val*10+pre+k,pre+k,dig+1,ans,n,k);
-      }
-       if(pre-k>=0){
-        helper(val*10+pre-k,pre-k,dig+1,ans,n,k);
-      }
-   }
     vector<int> numsSameConsecDiff(int n, int k) {
-        int ds=0;
-        set<int>ans;
-        helper(0,-1,0,ans,n,k);
-        return vector<int>(ans.begin(),ans.end());
+        deque<int> q{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        while (--n > 0) {
+            int sz = q.size();
+            for (int i = 0; i < sz; i++) {
+                int p = q.front();
+                q.pop_front();
+              
+                    if ((p % 10) - k>=0) {
+                        q.push_back(p * 10 + (p % 10) - k);
+                    }
+                    if ((p % 10) +k<=9) {
+                        q.push_back(p * 10 + (p % 10) +k);
+                    }
+                
+            }
+        }
+        set<int>a=set<int>{q.begin(), q.end()};
+        vector<int>(a.begin(),a.end());
+        return         vector<int>(a.begin(),a.end());
     }
 };
