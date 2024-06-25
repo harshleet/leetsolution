@@ -11,26 +11,22 @@
  */
 class Solution {
 public:
-    TreeNode* create(int st,int end,vector<int>&preorder){
-        if(st>end){
+    TreeNode* helper(int st,int en,vector<int>&preorder){
+        if(st>en){
             return NULL;
         }
-        
-        int k=st+1;
+
         TreeNode* root=new TreeNode(preorder[st]);
-        for(int i=st+1;i<=end;i++){
-            if(preorder[i]<preorder[st]){
-                k++;
-            }else{
-                break;
-            }
+        int np=st+1;
+        while(np<=en && preorder[st]>preorder[np]){
+            np++;
         }
-      
-        root->left=create(st+1,k-1,preorder);
-        root->right=create(k,end,preorder);
+        // cout<<st<<" "<<np<<endl;
+        root->left=helper(st+1,np-1,preorder);
+        root->right=helper(np,en,preorder);
         return root;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        return create(0,preorder.size()-1,preorder);
+        return helper(0,preorder.size()-1,preorder);
     }
 };
