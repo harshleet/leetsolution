@@ -11,27 +11,27 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* root,vector<int>&in){
+    void helper(TreeNode* root,vector<int>&in){
         if(root==NULL){
             return;
         }
-        inorder(root->left,in);
+        helper(root->left,in);
         in.push_back(root->val);
-        inorder(root->right,in);
+        helper(root->right,in);
     }
-    TreeNode* construct(int st,int en,vector<int>&in){
-        if(st>en){
+    TreeNode* create(vector<int>&in,int st,int end){
+        if(st>end){
             return NULL;
         }
-        int mid=(st+en)/2;
-        TreeNode* root=new TreeNode(in[mid]);
-        root->left=construct(st,mid-1,in);
-        root->right=construct(mid+1,en,in);
+        int ind=(st+end)/2;
+        TreeNode* root=new TreeNode(in[ind]);
+        root->left=create(in,st,ind-1);
+        root->right=create(in,ind+1,end);
         return root;
     }
     TreeNode* balanceBST(TreeNode* root) {
         vector<int>in;
-        inorder(root,in);
-        return construct(0,in.size()-1,in);
+        helper(root,in);
+        return create(in,0,in.size()-1);
     }
 };
