@@ -1,32 +1,35 @@
 class Solution {
 public:
-    int check(int mid,vector<int>&nums){
-        int st=1;
-        long long cur=0;
+    bool isPos(int mid,vector<int>&nums,int k){
+        int p=0,sum=0;
         for(int i=0;i<nums.size();i++){
-            if(cur+nums[i]>mid){
-                cur=0;
-                st++;
+            if(sum+nums[i]<=mid){
+                sum+=nums[i];
+            }else if(nums[i]<=mid){
+                sum=nums[i];
+                p++;
+            }else{
+                return false;
             }
-            cur+=nums[i];
         }
-        return st;
+        if(sum>0){
+            p++;
+        }
+        return p<=k;
     }
     int splitArray(vector<int>& nums, int k) {
-       if(nums.size()<k){
-           return -1;
-       }
-       int low=*max_element(nums.begin(),nums.end());
-       int high=accumulate(nums.begin(),nums.end(),0);
-       while(low<=high){
-           int mid=(low+high)/2;
-           if(check(mid,nums)>k){
-               low=mid+1;
-           }else{
-               high=mid-1;
-           }
+        int l=0,h=accumulate(nums.begin(),nums.end(),0);
+         int ans=-1;
+        while(l<=h){
+            int mid=(l+h)/2;
 
-       }
-       return low;
+            if(isPos(mid,nums,k)){
+                ans=mid;
+                h=mid-1;
+            }else{
+                l=mid+1;
+            }
+        }
+        return ans;
     }
 };
