@@ -1,32 +1,27 @@
 class Solution {
 public:
-bool helper(int ind,int subsum,vector<int>&arr,int k,int n,vector<vector<int>>&dp){
-    if(ind>=n){
-        if(subsum==k){
+   bool helper(int ind,int sum,int target,vector<int>&nums,vector<vector<int>>&dp){
+    if(sum==target){
             return true;
-        }
+     }
+    if(ind>=nums.size() || sum>target){
         return false;
     }
-  
-    if(dp[ind][subsum]!=-1){
-        return dp[ind][subsum];
+    if(dp[ind][sum]!=-1){
+        return dp[ind][sum];
     }
-   
+      int nt=helper(ind+1,sum,target,nums,dp);
+      int t=helper(ind+1,sum+nums[ind],target,nums,dp);
 
-    bool ntake=helper(ind+1,subsum,arr,k,n,dp);
-    bool take=false;
-    if (subsum+arr[ind] <= k) {
-        take=helper(ind + 1, subsum + arr[ind], arr, k, n, dp);
-    }
-    return dp[ind][subsum]=take|ntake;
-}
+      return dp[ind][sum]=nt|t;
+
+   }
     bool canPartition(vector<int>& nums) {
-        int n=nums.size(),sum=accumulate(nums.begin(),nums.end(),0);
-        if(sum%2!=0){
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        if(sum%2==1){
             return false;
         }
-        int k=sum/2;
-        vector<vector<int>>dp(n,vector<int>(k+1,-1));
-       return helper(0,0,nums,k,n,dp);
+        vector<vector<int>>dp(nums.size(),vector<int>((sum/2)+1,-1));
+        return helper(0,0,sum/2,nums,dp);
     }
 };
