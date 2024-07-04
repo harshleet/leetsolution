@@ -6,9 +6,7 @@ public:
         if(n1>n2){
             return findMedianSortedArrays(nums2,nums1);
         }
-        if(n1==1 && n2==0){
-            return nums1[0];
-        }
+     
         int left=(n1+n2+1)/2;
         int low=0,high=n1;
         while(low<=high){
