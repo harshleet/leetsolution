@@ -34,7 +34,7 @@ public:
             }
             ans+=(clen-1);
         }
-        cout<<ans<<endl;
+        // cout<<ans<<endl;
         return ans;
     }
     int minimumOperations(TreeNode* root) {
