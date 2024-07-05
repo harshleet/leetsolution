@@ -1,8 +1,31 @@
 class Graph {
 public:
-    vector<vector<pair<int,int>>>adj;
+   vector<vector<pair<int,int>>>adj;
+   int sz;
+    int calc(int node1,int node2){
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        vector<int>dist(sz,INT_MAX);
+        pq.push({0,node1});
+        dist[node1]=0;
+        while(!pq.empty()){
+            auto itr=pq.top();
+            pq.pop();
+
+            for(auto it:adj[itr.second]){
+                if(itr.first+it.second<dist[it.first]){
+                    dist[it.first]=itr.first+it.second;
+                    pq.push({dist[it.first],it.first});
+                }
+            }
+        }
+        if(dist[node2]==INT_MAX){
+            return -1;
+        }
+        return dist[node2];
+    }
     Graph(int n, vector<vector<int>>& edges) {
         adj.resize(n);
+       sz=n;
         for(int i=0;i<edges.size();i++){
             adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
         }
@@ -13,27 +36,10 @@ public:
     }
     
     int shortestPath(int node1, int node2) {
-        vector<int>dis(adj.size(),INT_MAX);
-        priority_queue<pair<int,int>>pq;
-        pq.push({0,node1});
-        dis[node1]=0;
-
-        while(!pq.empty()){
-            int dist=pq.top().first;
-            int node=pq.top().second;
-            pq.pop();
-
-            for(auto it:adj[node]){
-                if(dist+it.second<dis[it.first]){
-                    dis[it.first]=dist+it.second;
-                    pq.push({dist+it.second,it.first});
-                }
-            }
+        if(node1==node2){
+            return 0;
         }
-        if(dis[node2]==INT_MAX){
-            return -1;
-        }
-        return dis[node2];
+        return calc(node1,node2);
     }
 };
 
