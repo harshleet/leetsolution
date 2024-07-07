@@ -1,23 +1,22 @@
 class Solution {
 public:
-    int helper(vector<int>& nums, int k){
-        int cnt=0,j=0,ans=0;
+    int atleast(int k,vector<int>&nums){
+        int j=0,c=0,ans=0;
         for(int i=0;i<nums.size();i++){
             if(nums[i]%2==1){
-                cnt++;
+                c++;
             }
-            while(cnt>k && j<=i){
+            while(c>=k && j<=i){
+                ans+=nums.size()-i;
                 if(nums[j]%2==1){
-                 cnt--;
-               }
-               j++;
+                        c--;
+                }
+                j++;
             }
-
-             ans+=i-j+1;
         }
         return ans;
     }
     int numberOfSubarrays(vector<int>& nums, int k) {
-        return helper(nums,k)-helper(nums,k-1);
+        return atleast(k,nums)-atleast(k+1,nums);
     }
 };
