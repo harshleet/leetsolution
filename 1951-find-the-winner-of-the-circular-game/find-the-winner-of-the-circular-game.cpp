@@ -1,37 +1,34 @@
 class Solution {
 public:
     int findTheWinner(int n, int k) {
-        if(n==1){
-            return 1;
-        }
+        
         queue<int>q;
         for(int i=1;i<=n;i++){
             q.push(i);
         }
+
         while(!q.empty()){
-            vector<int>store;
-            int n=q.size();
-            int vl=k;
-            if(vl>q.size()){
-                vl=(k%n);
-                if(vl==0){
-                    vl=n;
-                }
-                // cout<<vl<<" ";
-            }
-            for(int i=0;i<vl;i++){
-                store.push_back(q.front());
-                // cout<<q.front()<<" ";
-                q.pop();
-            }
-            for(int i=0;i<store.size()-1;i++){
-                q.push(store[i]);
-            }
-            if(q.size()==1){
+            int sz=q.size();
+            if(sz==1){
                 break;
             }
+            vector<int>temp;
+            int t=k;
+            if(sz<t){
+                t%=sz;
+                if(t==0){
+                    t=sz;
+                }
+            }
+            for(int i=0;i<t;i++){
+                temp.push_back(q.front());
+                q.pop();
+            }
+            // cout<<temp[t-1]<<endl;
+            for(int i=0;i<t-1;i++){
+                q.push(temp[i]);
+            }
         }
-        // cout<<q.size()<<endl;
         return q.front();
     }
 };
