@@ -1,22 +1,21 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        for(auto it: intervals){
-            pq.push({it[0],it[1]});
+        priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>>pq;
+        for(auto it:intervals){
+            pq.push(it);
         }
-       vector<vector<int>>ans;
+        vector<vector<int>>ans;
         while(!pq.empty()){
-            int st=pq.top().first;
-            int en=pq.top().second;
+            int st=pq.top()[0];
+            int end=pq.top()[1];
             pq.pop();
-
-            while(!pq.empty() && pq.top().first<=en){
-                en=max(en,pq.top().second);
+            while(!pq.empty() && end>=pq.top()[0]){
+                end=max(end,pq.top()[1]);
                 pq.pop();
             }
-            vector<int>temp={st,en};
-            ans.push_back(temp);
+            
+            ans.push_back({st,end});
         }
         return ans;
     }
