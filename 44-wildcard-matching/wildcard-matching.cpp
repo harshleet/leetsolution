@@ -1,40 +1,36 @@
 class Solution {
 public:
-    bool helper(int ind1,int ind2,string &s,string &p,vector<vector<int>>&dp){
-        if(ind1==s.size() && ind2==p.size()){
+    bool helper(int i,int j,string& s,string& p,vector<vector<int>>&dp,int n,int m){
+        if(i==n && j==m){
             return true;
         }
-        if(ind1>=s.size()){
-            for(int i=ind2;i<p.size();i++){
-                if(p[i]!='*'){
+        if(i==n){
+            for(int k=j;k<p.size();k++){
+                if(p[k]!='*'){
                     return false;
                 }
             }
             return true;
         }
-        if(ind2>=p.size()){
+        if(j==m){
             return false;
         }
-        if(dp[ind1][ind2]!=-1){
-            return dp[ind1][ind2];
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
-        if(p[ind2]=='*'){
-            bool a=false;
-           for(int i=ind1;i<=s.size();i++){
-              a|=helper(i,ind2+1,s,p,dp);
-           }
-           return dp[ind1][ind2]=a;
+        
+        if(p[j]=='*'){
+            return dp[i][j]=helper(i,j+1,s,p,dp,n,m)|helper(i+1,j,s,p,dp,n,m);
+        }else if(p[j]=='?'){
+           return dp[i][j]=helper(i+1,j+1,s,p,dp,n,m);
+        }else if(s[i]==p[j]){
+            return dp[i][j]=helper(i+1,j+1,s,p,dp,n,m);
         }
-        if(p[ind2]=='?'){
-            return dp[ind1][ind2]=helper(ind1+1,ind2+1,s,p,dp);
-        }
-        if(p[ind2]!=s[ind1]){
-            return dp[ind1][ind2]=false;
-        }
-        return dp[ind1][ind2]=helper(ind1+1,ind2+1,s,p,dp);
+        return dp[i][j]=false;
     }
     bool isMatch(string s, string p) {
         vector<vector<int>>dp(s.size(),vector<int>(p.size(),-1));
-        return helper(0,0,s,p,dp);
+       
+        return helper(0,0,s,p,dp,s.size(),p.size());
     }
 };
