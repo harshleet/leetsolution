@@ -82,7 +82,6 @@ public:
                     }
                 }else{
                     if(temp[i]=='a'){
-                        cout<<i<<" ";
                         st.push({temp[i],i});
                     }else if(temp[i]=='b' && !st.empty() && st.top().first=='a'){
                         ans+=x;
