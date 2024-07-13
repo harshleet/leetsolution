@@ -1,26 +1,25 @@
 class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
-        int n = nums.size();
-        vector<int> pre(n);
-        map<int, int> m;
-        for (int i = 0; i < n; i++) {
-            if (i == 0) {
-                pre[i] = nums[i] % k;
-            } else {
-                pre[i] = pre[i - 1] + (nums[i] % k);
-                if (pre[i] % k == 0) {
-                    return true;
-                } else if (m.find(pre[i] % k) != m.end()) {
-                    if (m[pre[i] % k] != i - 1) {
-                        return true;
-                    }
-                }
-                   
-                
+        
+        int n=nums.size();
+        vector<int>pre(n+1);
+        for(int i=0;i<n;i++){
+            pre[i+1]=pre[i]+nums[i];
+        }
+        map<int,int>mod;
+        mod[0]=0;
+        mod[pre[1]%k]=0;
+        for(int i=1;i<n;i++){
+            int rem=pre[i+1]%k;
+            
+            if(rem==0){
+                return true;
+            }else if(mod.find(rem)!=mod.end() && mod[rem]<i-1){
+                return true;
+            }else if(mod.find(rem)==mod.end() ){
+                mod[rem]=i;
             }
-            if(m.find(pre[i] % k) == m.end()){
-             m[pre[i] % k] = i;}
         }
         return false;
     }
