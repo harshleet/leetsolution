@@ -9,11 +9,9 @@ public:
         }
         map<int,int>mod;
         mod[0]=0;
-        mod[pre[1]%k]=0;
-        for(int i=1;i<n;i++){
+        for(int i=0;i<n;i++){
             int rem=pre[i+1]%k;
-            
-            if(rem==0){
+            if(rem==0 && i!=0){
                 return true;
             }else if(mod.find(rem)!=mod.end() && mod[rem]<i-1){
                 return true;
