@@ -1,65 +1,79 @@
+class Node{
+    public:
+        int value;
+        int key;
+        Node* prev;
+        Node* next;
+
+        Node(int k,int val){
+            value=val;
+            key=k;
+            prev=NULL;
+            next=NULL;
+        }
+};
+
 class LRUCache {
 public:
-    class node{
-        public:
-        int key;
-        int val;
-        node* next;
-        node* prev;
-        node(int key,int val){
-            this->key=key;
-            this->val=val;
-        }
-    };
     int cap;
-    node* head=new node(-1,-1);
-    node* tail=new node(-1,-1);
-     unordered_map<int,node*>m;
+    map<int,Node*>list;
+    Node* head=new Node(-1,-1);
+    Node* tail=new Node(-1,-1);
 
-   void addnode(node*newnode ){
-       node* temp=head->next;
-       newnode->next=temp;
-       temp->prev=newnode;
-       head->next=newnode;
-       newnode->prev=head;
-   }
-   void deletenode(node* delnode){
-       node* delprev=delnode->prev;
-       node* delnext=delnode->next;
-       delprev->next=delnext;
-       delnext->prev=delprev;
-   }
     LRUCache(int capacity) {
-        cap= capacity;
+        cap=capacity;
         head->next=tail;
         tail->prev=head;
     }
-    
+    void add(Node* node){
+        // cout<<node->key<<" "<<endl;
+        Node* temp=head->next;
+        head->next=node;
+        node->prev=head;
+        node->next=temp;
+        temp->prev=node;
+    }
+
+    void remove(Node* node){
+        Node* temp=node->prev;
+        // cout<<node->key<<" b"<<node->next->value<<endl;
+        Node* temp2=node->next;
+        temp->next=temp2;
+        temp2->prev=temp;
+        node=NULL;
+    }
+
     int get(int key) {
-        if(m.find(key)!=m.end()){
-            node* getnode=m[key];
-            int getval=getnode->val;
-            m.erase(key);
-            deletenode(getnode);
-            addnode(getnode);
-            m[key]=getnode;
-            return getval;
-        }else
-         return -1;
+        if(list.find(key)==list.end()){
+            return -1;
+        }
+        remove(list[key]);
+        add(list[key]);
+        return list[key]->value;
     }
     
     void put(int key, int value) {
-        if(m.find(key)!=m.end()){
-            node* existnode=m[key];
-            m.erase(key);
-            deletenode(existnode);
+       
+        if(list.find(key)!=list.end()){
+            remove(list[key]);
+            Node* n=new Node(key,value);
+            list[key]=n;
+            add(list[key]);
+        }else if(cap>0){
+             Node* n=new Node(key,value);
+              list[key]=n;
+            add(n);
+            cap--;
+        }else{
+            
+            list.erase(tail->prev->key);
+            remove(tail->prev);
+            Node* n=new Node(key,value);
+            list[key]=n;
+            
+            add(n);
         }
-        if(m.size()==cap){
-            m.erase(tail->prev->key);
-            deletenode(tail->prev);
-        }
-        addnode(new node(key,value));
-        m[key]=head->next;
+       
     }
 };
 
