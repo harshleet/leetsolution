@@ -2,27 +2,25 @@ class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
         vector<int>ng(nums2.size(),-1);
-        map<int,int>m;
         stack<int>st;
         for(int i=0;i<nums2.size();i++){
-            m[nums2[i]]=i;
-            if(st.empty() || nums2[st.top()]>nums2[i]){
+            if(st.empty() || nums2[i]<nums2[st.top()]){
                 st.push(i);
             }else{
-                while(!st.empty() && nums2[st.top()]<nums2[i]){
-                    ng[st.top()]=i;
+                while(!st.empty() && nums2[i]>=nums2[st.top()]){
+                    ng[st.top()]=nums2[i];
                     st.pop();
                 }
                 st.push(i);
             }
         }
-        vector<int>ans(nums1.size(),-1);
+        map<int,int>mp;
+        for(int i=0;i<ng.size();i++){
+            mp[nums2[i]]=ng[i];
+        }
+        vector<int>ans(nums1.size());
         for(int i=0;i<nums1.size();i++){
-            int val=ng[m[nums1[i]]];
-            if(val!=-1){
-                ans[i]=nums2[val];
-            }
-
+            ans[i]=mp[nums1[i]];
         }
         return ans;
     }
