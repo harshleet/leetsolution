@@ -1,34 +1,34 @@
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
-        if (hand.size()%groupSize!=0) {
+        if(hand.size()%groupSize!=0){
             return false;
         }
-        priority_queue<int, vector<int>, greater<int>> pq;
-        for (int i = 0; i < hand.size(); i++) {
+        priority_queue<int,vector<int>,greater<int>>pq;
+        for(int i=0;i<hand.size();i++){
             pq.push(hand[i]);
         }
-        while (!pq.empty()) {
-            vector<int> temp;
-            int cnt = 0, pre = -1;
-            
-            while (cnt < groupSize && !pq.empty()) {
-                int vl = pq.top();
+
+        while(!pq.empty()){
+            int prev=-1,sz=0;
+            vector<int>temp;
+            while(!pq.empty() && sz<groupSize){
+                int val=pq.top();
                 pq.pop();
-                if (pre == -1 || vl - pre == 1) {
-                    cnt++;
-                    pre = vl;
-                } else if(pre==vl){
-                    temp.push_back(vl);
-                }else {
+                // cout<<val<<" ";
+                if(prev==-1 || val==prev+1){
+                    prev=val;
+                    sz++;
+                }else if(prev==val){
+                    temp.push_back(val);
+                }else{
                     return false;
                 }
             }
-            if(cnt!=groupSize){
+            if(sz!=groupSize){
                 return false;
             }
             for(int i=0;i<temp.size();i++){
-                cout<<temp[i]<<endl;
                 pq.push(temp[i]);
             }
         }
