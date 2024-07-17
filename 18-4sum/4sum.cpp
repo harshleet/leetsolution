@@ -1,35 +1,34 @@
 class Solution {
 public:
+// -1 -1  0 1 1 2
+// f   s    t fo 
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
-         set<vector<int>>ans;
-        
+        if(nums.size()<4){
+            return {};
+        }
         sort(nums.begin(),nums.end());
-
-       for(int vlow=0;vlow<nums.size();vlow++){
-        for(int low=vlow+1;low<nums.size();low++){
-            int middle=low+1;
-             int high=nums.size()-1;
-            while( middle<high){
-                long long int vlval=nums[vlow];
-                long long int lval=nums[low];
-               long long int hval=nums[high];
-               long long int mval=nums[middle];
-        
-                    if(lval+mval+hval+vlval>target){
-                        high--;
-                    }else if(lval+mval+hval+vlval<target){
-                        middle++;
+        set<vector<int>>ans;
+        for(int f=0;f<nums.size()-3;f++){
+            for(int s=f+1;s<nums.size()-2;s++){
+                int t=s+1;
+                int fo=nums.size()-1;
+                while(t<fo){
+                    long long sum=nums[f];
+                    sum+=nums[s];
+                    sum+=nums[t];
+                    sum+=nums[fo];
+                    if(sum==target){
+                        ans.insert({nums[f],nums[s],nums[t],nums[fo]});
+                        t++;
+                        fo--;
+                    }else if(sum<target){
+                       t++;
+                    }else if(sum>target){
+                        fo--;
                     }
-                
-            
-                else{
-                        ans.insert({int(lval),int(mval),int(hval),int(vlval)});
-                        middle++;
-                        high--;
-                    }
+                }
             }
-        }}
-        vector<vector<int>>an(ans.begin(),ans.end());
-        return an;
+        }
+        return vector<vector<int>>(ans.begin(),ans.end());
     }
 };
