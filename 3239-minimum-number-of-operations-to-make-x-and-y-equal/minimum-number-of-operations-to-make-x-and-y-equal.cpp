@@ -1,42 +1,47 @@
 class Solution {
 public:
     int minimumOperationsToMakeEqual(int x, int y) {
+
         if(y>=x){
             return y-x;
         }
-         map<int,int>m;
-         queue<pair<int,int>>q;
-          q.push({x,0});
-        m[x]=1;
-        
+        queue<pair<int,int>>q;
+        q.push({x,0});
+
+        map<int,int>vis;
+
+        vis[x]=1;
+
         while(!q.empty()){
-            int node=q.front().first;
-            int step=q.front().second;
+            int val=q.front().first;
+            int st=q.front().second;
             q.pop();
+
+            if(val==y){
+                return st;
+            }
             
-            if(node==y){
-                return step;
+            if(val>x+11){
+                continue;
             }
 
-            if(node%5==0 && m.find(node/5)==m.end()){
-                m[node/5]=1;
-                q.push({node/5,step+1});
+            if(val%11==0 && vis.find(val/11)==vis.end()){
+                q.push({val/11,st+1});
+                vis[val/11]=1;
             }
-            if(node%11==0 && m.find(node/11)==m.end()){
-                m[node/11]=1;
-                q.push({node/11,step+1});
+            if(val%5==0 && vis.find(val/5)==vis.end()){
+                q.push({val/5,st+1});
+                vis[val/5]=1;
             }
-            if(m.find(node-1)==m.end()){
-                m[node-1]=1;
-                q.push({node-1,step+1});
+            if(vis.find(val-1)==vis.end()){
+                q.push({val-1,st+1});
+                vis[val-1]=1;
             }
-            if(m.find(node+1)==m.end()){
-                m[node+1]=1;
-                q.push({node+1,step+1});
+            if(vis.find(val+1)==vis.end()){
+                q.push({val+1,st+1});
+                vis[val+1]=1;
             }
         }
         return -1;
-
-
     }
 };
