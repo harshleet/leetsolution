@@ -4,7 +4,7 @@ public:
         int low=0,high=nums.size()-1;
         int temp=low;
         while(low<=high && temp<=high){
-            cout<<low<<" "<<high<<" "<<temp<<endl;
+    
             if(nums[low]==0){
                 low++;
                 temp=low;
