@@ -1,66 +1,77 @@
 class Solution {
 public:
     vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
-        vector<vector<int>>adjr(k);
-        vector<vector<int>>adjc(k);
-        vector<int>inr(k,0);
-        vector<int>inc(k,0);
-        for(auto it:rowConditions){
-            adjr[it[0]-1].push_back(it[1]-1);
-            inr[it[1]-1]++;
+        vector<vector<int>>adj(k+1);
+        vector<int>ind(k+1);
+        for(int i=0;i<rowConditions.size();i++){
+            adj[rowConditions[i][0]].push_back(rowConditions[i][1]);
+            ind[rowConditions[i][1]]++;
         }
-        for(auto it:colConditions){
-            adjc[it[0]-1].push_back(it[1]-1);
-            inc[it[1]-1]++;
-        }
-        vector<vector<int>>ans(k,vector<int>(k));
-        queue<int>qr;
-        queue<int>qc;
 
-        for(int i=0;i<k;i++){
-            if(inr[i]==0){
-                qr.push(i);
-            }
-            if(inc[i]==0){
-                qc.push(i);
+        queue<int>q;
+        vector<int>row(k+1,-1);
+        int r=0;
+        for(int i= 1;i<=k;i++){
+            if(ind[i]==0){
+                q.push(i);
             }
         }
-        vector<int>row(k,-1);
-        vector<int>col(k,-1);
-        int r=0;
-        while(!qr.empty()){
-            int node=qr.front();
-            qr.pop();
+
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+
             row[node]=r;
             r++;
-            for(auto it:adjr[node]){
-                inr[it]--;
-                if(inr[it]==0){
-                    qr.push(it);
-                }
-            }
-        }
-         int c=0;
-        while(!qc.empty()){
-            int node=qc.front();
-            qc.pop();
-            col[node]=c;
-            c++;
-            for(auto it:adjc[node]){
-                inc[it]--;
-                if(inc[it]==0){
-                    qc.push(it);
+
+            for(auto it:adj[node]){
+                ind[it]--;
+                if(ind[it]==0){
+                    q.push(it);
                 }
             }
         }
 
-        for(int i=0;i<k;i++){
+        vector<vector<int>>adj1(k+1);
+        vector<int>ind1(k+1);
+        for(int i=0;i<colConditions.size();i++){
+            adj1[colConditions[i][0]].push_back(colConditions[i][1]);
+            ind1[colConditions[i][1]]++;
+        }
+
+        queue<int>q1;
+        vector<int>col(k+1,-1);
+        int c=0;
+        for(int i=1;i<=k;i++){
+            if(ind1[i]==0){
+                q1.push(i);
+            }
+        }
+
+        while(!q1.empty()){
+            int node=q1.front();
+            q1.pop();
+
+            col[node]=c;
+            c++;
+
+            for(auto it:adj1[node]){
+                ind1[it]--;
+                if(ind1[it]==0){
+                    q1.push(it);
+                }
+            }
+        }
+
+        vector<vector<int>>ans(k,vector<int>(k));
+        for(int i=1;i<=k;i++){
+            
             if(row[i]==-1 || col[i]==-1){
                 return {};
             }
-            ans[row[i]][col[i]]=i+1;
+            ans[row[i]][col[i]]=i;
         }
         return ans;
-
+       
     }
 };
