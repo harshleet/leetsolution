@@ -1,27 +1,32 @@
 class Solution {
 public:
- int helper(int r,int c,vector<vector<int>>&grid,vector<vector<int>>&dp,int n,int m,vector<vector<int>>&vis){
-        if(r<0 || c<0 ||r>=n || c>=m ){
-            return 1e8;
-        }
-       
-        if(r==n-1 && c==m-1){
-           return grid[r][c];
-        }
-        if(dp[r][c]!=-1){
-            return dp[r][c];
-        }
-    
-        int ri=grid[r][c]+helper(r,c+1,grid,dp,n,m,vis);
-        int dow=grid[r][c]+helper(r+1,c,grid,dp,n,m,vis);
-        return dp[r][c]=min(ri,dow);
-
-    }
     int minPathSum(vector<vector<int>>& grid) {
-        int n=grid.size();
-        int m=grid[0].size();
-        vector<vector<int>>dp(n,vector<int>(m,-1));
-        vector<vector<int>>vis(n,vector<int>(m,0));
-        return helper(0,0,grid,dp,n,m,vis);
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>>dist(n,vector<int>(m,1e9));
+        priority_queue<tuple<int,int,int>,vector<tuple<int,int,int>>,greater<tuple<int,int,int>>>pq;
+        
+        pq.push({grid[0][0],0,0});
+        dist[0][0]=grid[0][0];
+
+        vector<int>dr={1,0};
+        vector<int>dc={0,1};
+        while(!pq.empty()){
+            auto it=pq.top();
+            int dis=get<0>(it);
+            int r=get<1>(it);
+            int c=get<2>(it);
+            pq.pop();
+
+            for(int i=0;i<2;i++){
+                int nr=r+dr[i];
+                int nc=c+dc[i];
+                if(nr>=0 && nc>=0 && nr<n && nc<m && dis+grid[nr][nc]<dist[nr][nc]){
+                    dist[nr][nc]=dis+grid[nr][nc];
+                    pq.push({dis+grid[nr][nc],nr,nc});
+                }
+            }
+
+        }
+        return dist[n-1][m-1];
     }
 };
