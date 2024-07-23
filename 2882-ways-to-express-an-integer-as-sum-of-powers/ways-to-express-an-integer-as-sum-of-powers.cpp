@@ -1,26 +1,25 @@
 class Solution {
 public:
-int mod=1e9+7;
-    int helper(int n,int x,int ind,vector<vector<int>>&dp){
-        
+int mod=(1e9+7);
+    int helper(int ind,int n,vector<vector<int>>&dp,int x){
         if(n==0){
             return 1;
         }
-        if(n<0|| n-pow(ind,x)<0){
+        if(n<0 || ind>n){
             return 0;
         }
         if(dp[ind][n]!=-1){
             return dp[ind][n];
         }
-        int ntake=helper(n,x,ind+1,dp);
-        int take=0;
+        int nt=helper(ind+1,n,dp,x);
+        int t=0;
         if(n-pow(ind,x)>=0){
-            take=helper(n-pow(ind,x),x,ind+1,dp);
+            t=helper(ind+1,n-pow(ind,x),dp,x);
         }
-        return dp[ind][n]=(take+ntake)%mod;
+        return dp[ind][n]=(t+nt)%mod;
     }
     int numberOfWays(int n, int x) {
         vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
-       return  helper(n,x,1,dp);
+        return helper(1,n,dp,x);
     }
 };
