@@ -1,36 +1,47 @@
 class Solution {
 public:
-    bool helper(int i,int j,string& s,string& p,vector<vector<int>>&dp,int n,int m){
-        if(i==n && j==m){
+    int helper(int ind1,int ind2,string& s,string& p,int n,int m,vector<vector<int>>&dp){
+      if(ind1==n && ind2==m){
+        return true;
+      }   
+       if(ind1==n ){
+         for(int i=ind2;i<p.size();i++){
+                if(p[i]!='*'){
+                    return false;
+                }
+            }
             return true;
+      } 
+      if(ind2==m){
+        return false;
+      }
+      if(dp[ind1][ind2]!=-1){
+        return dp[ind1][ind2];
+      }
+      bool ans=false;
+      if(s[ind1]==p[ind2]){
+        ans=ans|helper(ind1+1,ind2+1,s,p,n,m,dp);
+      }else if(p[ind2]=='?'){
+        ans=ans|helper(ind1+1,ind2+1,s,p,n,m,dp);
+      }else if(p[ind2]=='*'){
+        for(int i=0;i<=n-ind1;i++){
+            ans=ans|helper(ind1+i,ind2+1,s,p,n,m,dp);
         }
-        if(i==n){
-            for(int k=j;k<p.size();k++){
-                if(p[k]!='*'){
+      }
+      return dp[ind1][ind2]=ans;
+    }
+    bool isMatch(string s, string p) {
+        int n=s.size(),m=p.size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
+        if(s.size()==0){
+            for(int i=0;i<p.size();i++){
+                if(p[i]!='*'){
                     return false;
                 }
             }
             return true;
         }
-        if(j==m){
-            return false;
-        }
-        if(dp[i][j]!=-1){
-            return dp[i][j];
-        }
-        
-        if(p[j]=='*'){
-            return dp[i][j]=helper(i,j+1,s,p,dp,n,m)|helper(i+1,j,s,p,dp,n,m);
-        }else if(p[j]=='?'){
-           return dp[i][j]=helper(i+1,j+1,s,p,dp,n,m);
-        }else if(s[i]==p[j]){
-            return dp[i][j]=helper(i+1,j+1,s,p,dp,n,m);
-        }
-        return dp[i][j]=false;
-    }
-    bool isMatch(string s, string p) {
-        vector<vector<int>>dp(s.size(),vector<int>(p.size(),-1));
-       
-        return helper(0,0,s,p,dp,s.size(),p.size());
+        return helper(0,0,s,p,n,m,dp);
+
     }
 };
