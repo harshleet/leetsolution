@@ -19,9 +19,7 @@ public:
         return dp[ind1][ind2];
       }
       bool ans=false;
-      if(s[ind1]==p[ind2]){
-        ans=ans|helper(ind1+1,ind2+1,s,p,n,m,dp);
-      }else if(p[ind2]=='?'){
+      if(s[ind1]==p[ind2]||p[ind2]=='?'){
         ans=ans|helper(ind1+1,ind2+1,s,p,n,m,dp);
       }else if(p[ind2]=='*'){
         for(int i=0;i<=n-ind1;i++){
