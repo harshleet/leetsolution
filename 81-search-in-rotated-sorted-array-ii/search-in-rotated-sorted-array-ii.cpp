@@ -1,36 +1,32 @@
 class Solution {
 public:
-    bool search(vector<int>& arr, int target) {
-       
-         int n = arr.size();
-        int low = 0, high = n - 1;
+    bool search(vector<int>& nums, int target) {
+          int l=0,h=nums.size()-1;
 
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
-
-            if (arr[mid] == target)
+        while(l<=h){
+            int mid=(l+h)/2;
+            if(nums[mid]==target){
                 return true;
-             if(arr[low]==arr[high] && arr[low]==arr[mid]){
-                 low++;
-                 high--;
-                 continue;
-             }//this step is done to trim downthe duplicate part
-            // Left half is sorted
-            if (arr[low] <= arr[mid]) {
-                if (arr[low] <= target && target < arr[mid])
-                    high = mid - 1;
-                else
-                    low = mid + 1;
             }
-            // Right half is sorted
-            else {
-                if (arr[mid] < target && target <= arr[high])
-                    low = mid + 1;
-                else
-                    high = mid - 1;
+             if(nums[l]==nums[h] && nums[l]==nums[mid]){
+                 l++;
+                 h--;
+                 continue;
+             }
+            if(nums[l]<=nums[mid]){
+                if(nums[l]<=target && target<=nums[mid]){
+                    h=mid;
+                }else{
+                    l=mid+1;
+                }
+            }else if(nums[mid]<=nums[h]){
+                if(nums[mid]<=target && target<=nums[h]){
+                    l=mid;
+                }else{
+                    h=mid-1;
+                }
             }
         }
-
         return false;
     }
 };
