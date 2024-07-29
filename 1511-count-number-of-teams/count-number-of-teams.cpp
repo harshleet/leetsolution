@@ -8,7 +8,7 @@ public:
         set<int>temp;
         for(int i=0;i<n;i++){
            int leg = distance(temp.begin(), temp.lower_bound(rating[i]));
-            int les = distance(temp.upper_bound(rating[i]), temp.end());
+            int les = temp.size()-leg;
             temp.insert(rating[i]);
             t[i][0] = leg;
             t[i][1] = les;
@@ -17,7 +17,7 @@ public:
         set<int>temp2;
         for(int i=n-1;i>=0;i--){
            int rig = distance(temp2.begin(), temp2.lower_bound(rating[i]));
-            int ris = distance(temp2.upper_bound(rating[i]), temp2.end());
+            int ris =temp2.size()-rig;
             temp2.insert(rating[i]);
             t[i][2] = rig;
             t[i][3] = ris;
