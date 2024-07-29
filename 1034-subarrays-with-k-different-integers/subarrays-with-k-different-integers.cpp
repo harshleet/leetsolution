@@ -1,24 +1,23 @@
 class Solution {
 public:
-    int helper(vector<int>& nums, int k){
-        int j=0,ans=0;
-        map<int,int>m;
+    int atmostk(vector<int>& nums, int k){
+         map<int,int>m;
+        int j=0;
+        int cnt=0;
         for(int i=0;i<nums.size();i++){
             m[nums[i]]++;
-            while(m.size()>=k){
+            while(m.size()>k && j<=i){
                 m[nums[j]]--;
                 if(m[nums[j]]==0){
                     m.erase(nums[j]);
                 }
                 j++;
             }
-            ans+=i-j+1;
-
+                cnt+=i-j+1;
         }
-        return ans;
+        return cnt;
     }
     int subarraysWithKDistinct(vector<int>& nums, int k) {
-        //exactly k
-        return helper(nums,k+1)-helper(nums,k);
+        return atmostk(nums,k)-atmostk(nums,k-1);
     }
 };
