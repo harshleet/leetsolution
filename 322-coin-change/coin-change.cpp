@@ -1,28 +1,28 @@
 class Solution {
 public:
+    int helper(int ind,int amount,vector<int>&coins,vector<vector<int>>&dp){
+        if(amount==0){
+            return 0;
+        }
+        if(ind>=coins.size()){
+            return 1e9;
+        }
+        if(dp[ind][amount]!=-1){
+            return dp[ind][amount];
+        }
+        int nt=helper(ind+1,amount,coins,dp);
+        int t=1e9;
+        for(int i=1;i<=amount/coins[ind];i++){
+            t=min(t,i+helper(ind+1,amount-coins[ind]*i,coins,dp));
+        }
+        return dp[ind][amount]=min(t,nt);
+    }
     int coinChange(vector<int>& coins, int amount) {
-        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,1e9));
-        for(int i=0;i<coins.size();i++){
-            dp[i][0]=0;
-        }
-        for(int sum=1;sum<=amount;sum++){
-            if(sum%coins[0]==0){
-                dp[0][sum]=sum/coins[0];
-            }
-        }
-        for(int ind=1;ind<coins.size();ind++){
-            for(int sum=1;sum<=amount;sum++){
-                int nt=dp[ind-1][sum];
-                int t=1e9;
-                if(sum>=coins[ind]){
-                    t=1+dp[ind][sum-coins[ind]];
-                }
-                dp[ind][sum]=min(t,nt);
-            }
-        }
-        if(dp[coins.size()-1][amount]==1e9){
+        vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
+        int val=helper(0,amount,coins,dp);
+        if(val>=1e9){
             return -1;
         }
-        return dp[coins.size()-1][amount];
+        return val;
     }
 };
