@@ -10,12 +10,12 @@ public:
         if(dp[ind][amount]!=-1){
             return dp[ind][amount];
         }
-        int nt=helper(ind+1,amount,coins,dp);
+        // int nt=helper(ind+1,amount,coins,dp);
         int t=1e9;
-        for(int i=1;i<=amount/coins[ind];i++){
+        for(int i=0;i<=amount/coins[ind];i++){
             t=min(t,i+helper(ind+1,amount-coins[ind]*i,coins,dp));
         }
-        return dp[ind][amount]=min(t,nt);
+        return dp[ind][amount]=t;
     }
     int coinChange(vector<int>& coins, int amount) {
         vector<vector<int>>dp(coins.size(),vector<int>(amount+1,-1));
