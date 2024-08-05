@@ -2,35 +2,42 @@ class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
         priority_queue<pair<int,char>>pq;
-        map<char,int>m;
+        map<char,int>mp;
         for(int i=0;i<tasks.size();i++){
-            m[tasks[i]]++;
+            mp[tasks[i]]++;
         }
-        for(auto it:m){
+        for(auto it:mp){
             pq.push({it.second,it.first});
         }
-        int ans=0;
+
+        int timer=0;
 
         while(!pq.empty()){
             if(pq.top().first==1){
-                return ans+pq.size();
+                return pq.size()+timer;
             }
-            vector<pair<int,char>>temp;
-            temp.push_back(pq.top());
+            // cout<<"a"<<endl;
+             vector<pair<int,char>>temp;
+             temp.push_back(pq.top());
+            //   cout<<pq.top().second<<endl;
             pq.pop();
-            ans++;
-            for(int i=0;i<n && !pq.empty();i++){
-               temp.push_back(pq.top());
-               pq.pop();
+           
+            timer++;
+            for(int i=0;i<n ;i++){
+                if(!pq.empty()){
+                    temp.push_back(pq.top());
+                    //  cout<<pq.top().second<<endl;
+                    pq.pop();
+                }
+                timer++;
             }
-            ans+=n;
+
             for(int i=0;i<temp.size();i++){
-                // cout<<temp[i].first<<" "<<ans<<endl;
                 if(temp[i].first>1){
-                   pq.push({temp[i].first-1,temp[i].second});
+                    pq.push({temp[i].first-1,temp[i].second});
                 }
             }
         }
-        return ans;
+        return timer;
     }
 };
