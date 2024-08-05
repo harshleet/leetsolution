@@ -1,20 +1,18 @@
 class Solution {
 public:
     string reorganizeString(string s) {
-        //same as task scheduler
         priority_queue<pair<int,char>>pq;
-        map<char,int>m;
-        int maxi=0;
+        map<char,int>mp;
         for(int i=0;i<s.size();i++){
-            m[s[i]]++;
-            maxi=max(maxi,m[s[i]]);
+            mp[s[i]]++;
         }
-        if(maxi>ceil(s.size()/(double)2)){
-            return "";
-        }
-        for(auto it:m){
+        for(auto it:mp){
+            if(it.second>ceil(s.size()/2.0)){
+                return "";
+            }
             pq.push({it.second,it.first});
         }
+
         string ans="";
 
         while(!pq.empty()){
@@ -25,20 +23,26 @@ public:
                 }
                 return ans;
             }
-            vector<pair<int,char>>temp;
-            temp.push_back(pq.top());
- 
-            ans+=pq.top().second;
+            // cout<<"a"<<endl;
+             vector<pair<int,char>>temp;
+             temp.push_back(pq.top());
+             ans+=pq.top().second;
+            //   cout<<pq.top().second<<endl;
             pq.pop();
-            if(!pq.empty()){
-               temp.push_back(pq.top());
-               ans+=pq.top().second;
-               pq.pop();
+           
+            for(int i=0;i<1;i++){
+                if(!pq.empty()){
+                    ans+=pq.top().second;
+                    temp.push_back(pq.top());
+                    //  cout<<pq.top().second<<endl;
+                    pq.pop();
+                }
             }
+
             for(int i=0;i<temp.size();i++){
-                // cout<<temp[i].first<<" "<<ans<<endl;
                 if(temp[i].first>1){
-                   pq.push({temp[i].first-1,temp[i].second});
+
+                    pq.push({temp[i].first-1,temp[i].second});
                 }
             }
         }
