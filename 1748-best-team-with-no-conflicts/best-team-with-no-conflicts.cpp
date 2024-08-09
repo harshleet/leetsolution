@@ -1,28 +1,26 @@
 class Solution {
 public:
-int helper(vector<pair<int,int>>&v,vector<vector<int>>&dp,int ind,int preage){
-    if(ind>=v.size()){
-        return 0;
-    }
-    if(dp[ind][preage]!=-1){
-        return dp[ind][preage];
-    }
-    int ntake=helper(v,dp,ind+1,preage);
-    int take=0;
-    if(v[ind].second>=preage){
-        take+=v[ind].first+helper(v,dp,ind+1,v[ind].second);
-    }
-    return dp[ind][preage]=max(take,ntake);
-}
-    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-          int n=scores.size();
-        vector<pair<int,int>>v;
-        for(int i=0;i<n;i++){
-            v.push_back({scores[i],ages[i]});
+    int helper(int ind,int pre,vector<vector<int>>&tot,vector<vector<int>>&dp){
+        if(ind>=tot.size()){
+            return 0;
         }
-        sort(v.begin(),v.end());
-      
-       vector<vector<int>>dp(n,vector<int>(1001,-1));
-       return helper(v,dp,0,0);
+        if(dp[ind][pre+1]!=-1){
+            return dp[ind][pre+1];
+        }
+        int nt=helper(ind+1,pre,tot,dp);
+        int t=0;
+        if(pre==-1|| tot[pre][0]==tot[ind][0] || tot[pre][1]<=tot[ind][1]){
+            t=tot[ind][1]+helper(ind+1,ind,tot,dp);
+        }
+        return dp[ind][pre+1]=max(t,nt);
+    }
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        vector<vector<int>>tot(scores.size());
+        for(int i=0;i<scores.size();i++){
+            tot[i]={ages[i],scores[i]};
+        }
+        sort(tot.begin(),tot.end());
+        vector<vector<int>>dp(scores.size(),vector<int>(scores.size(),-1));
+        return helper(0,-1,tot,dp);
     }
 };
