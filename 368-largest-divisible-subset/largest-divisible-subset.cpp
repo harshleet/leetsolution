@@ -1,40 +1,35 @@
 class Solution {
 public:
     vector<int> largestDivisibleSubset(vector<int>& nums) {
-        //print it
         sort(nums.begin(),nums.end());
         int n=nums.size();
         vector<int>dp(n,1);
-        vector<int>ha(n,-1);
-        int gmax=1,gmaxii=0;
-        for(int ind=1;ind<nums.size();ind++){
-            int maxi=1,maxii=ind;
-            for(int pre=ind-1;pre>=0;pre--){
-                if(nums[ind]%nums[pre]==0 ){
-                    if(1+dp[pre]>maxi){
-                        maxi=1+dp[pre];
-                        maxii=pre;
-                    }
+        vector<int>hash(n);
+        int maxi=0,last=-1;
+        for(int i=0;i<nums.size();i++){
+            hash[i]=i;
+            for(int j=0;j<i;j++){
+                if((nums[i]%nums[j]==0 || nums[j]%nums[i]==0) && 1+dp[j]>dp[i] ){
+                    dp[i]=1+dp[j];
+                    hash[i]=j;
                 }
             }
-           
-            dp[ind]=maxi;
-            if(maxii!=ind){
-              ha[ind]=maxii;
-            }
-            if(maxi>gmax){
-                gmax=maxi;
-                gmaxii=ind;
+            if(dp[i]>maxi){
+                maxi=dp[i];
+                last=i;
             }
         }
+        cout<<maxi<<" "<<last<<endl;
+        // if(last==)
         vector<int>ans;
-        while(ha[gmaxii]!=-1){
-            ans.push_back(nums[gmaxii]);
-            gmaxii=ha[gmaxii];
+        
+        while(hash[last]!=last){
+            
+            ans.push_back(nums[last]); 
+            last=hash[last];   
         }
-        ans.push_back(nums[gmaxii]);
+        ans.push_back(nums[last]);
         reverse(ans.begin(),ans.end());
-    return ans;
-       
+        return ans;
     }
 };
