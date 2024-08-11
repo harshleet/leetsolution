@@ -1,29 +1,18 @@
 class Solution {
 public:
     int subarraysDivByK(vector<int>& nums, int k) {
-        map<int,int>m;
-        int ans=0;
-        vector<int>pre(nums.size());
+        map<int,int>mp;
+        mp[0]++;
+
+        int sum=0,cnt=0;
         for(int i=0;i<nums.size();i++){
-            
-            if(i==0){
-                pre[i]=nums[i];
-            }else{
-                pre[i]=nums[i]+pre[i-1];
+            sum+=nums[i];
+            // cout<<sum<<" "<<(k+(sum%k))%k<<endl;
+            if(mp.find((k+(sum%k))%k)!=mp.end()){
+                cnt+=mp[(k+(sum%k))%k];
             }
+            mp[(k+(sum%k))%k]++;
         }
-        
-        for(int i=0;i<nums.size();i++){
-            cout<<pre[i]%k<<" ";
-            if((k+(pre[i]%k))%k==0){
-              ans++;
-            }
-            if(m.find((k+(pre[i]%k))%k)!=m.end()){
-                ans+=m[(k+(pre[i]%k))%k];
-            }
-            m[(k+(pre[i]%k))%k]++;
-        }
-        return ans;
-        
+        return cnt;
     }
 };
