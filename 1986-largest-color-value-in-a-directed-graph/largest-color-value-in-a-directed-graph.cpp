@@ -10,20 +10,21 @@ public:
         }
         queue<int>q;
         vector<vector<int>>mp(n,vector<int>(26));
-        
+         int maxi=0;
         for(int i=0;i<n;i++){
             if(ind[i]==0){
                 mp[i][colors[i]-'a']++;
+                maxi=max(maxi,mp[i][colors[i]-'a']);
                 q.push(i);
             }
         }
-        int maxi=0;
+       
         
         while(!q.empty()){
             int node=q.front();
             q.pop();
 
-            maxi=max(maxi,*max_element(mp[node].begin(),mp[node].end()));
+            // maxi=max(maxi,*max_element(mp[node].begin(),mp[node].end()));
             for(auto it:adj[node]){
                 for(int i=0;i<26;i++){
                     if(i==colors[it]-'a'){
@@ -33,10 +34,7 @@ public:
                     }
                     //  mp[it][i]=max(mp[node][i],mp[it][i]);
                 }
-                // mp[it][colors[it]-'a']++;
-                // for(int i=0;i<26;i++){
-                //      maxi=max(maxi,mp[it][i]);
-                // }
+               maxi=max(maxi,mp[it][colors[it]-'a']);
                  ind[it]--;
                 if(ind[it]==0){
                     q.push(it);
