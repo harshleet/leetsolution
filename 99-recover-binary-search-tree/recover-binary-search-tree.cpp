@@ -11,39 +11,27 @@
  */
 class Solution {
 public:
-TreeNode* f=NULL;
-TreeNode* s=NULL;
-TreeNode* t=NULL;
-TreeNode* pre=NULL;
-   void helper(TreeNode* root){
+    TreeNode* pre=new TreeNode(-1e9);
+    vector<pair<TreeNode*,TreeNode*>>v;
+    void helper(TreeNode* root){
         if(root==NULL){
-            return ;
+            return;
         }
-        // cout<<root->val<<" "<<maxi<<" "<<mini<<endl;
-        
         helper(root->left);
-        if(pre!=NULL && root->val<pre->val){
-            if(f==NULL){
-                f=pre;
-                s=root;
-            }else{
-                t=root;
-            }
+        if(pre->val!=-1e9 && root->val<pre->val){
+            v.push_back({pre,root});
         }
         pre=root;
         helper(root->right);
-        // return root;
-
-   }
+    }
     void recoverTree(TreeNode* root) {
         helper(root);
-        if(f!=NULL && s!=NULL && t==NULL){
-            swap(f->val,s->val);
-            // cout<<f->val<<" "<<s->val<<endl;
+        // cout<<v.size()<<endl;
+        if(v.size()==2){
+            swap(v[0].first->val,v[1].second->val);
         }
-        if(t!= NULL){
-            swap(f->val,t->val);
+        if(v.size()==1){
+            swap(v[0].first->val,v[0].second->val);
         }
-       
     }
 };
