@@ -1,41 +1,38 @@
 class Solution {
-public:
-    string minWindow(string s, string t) {
-        map<char, int> m;
-        vector<int> temp(66, 0);
-        int cnt=0;
-        set<char> st;
-        for (int i = 0; i < t.size(); i++) {
-            m[t[i] - 'A']++;
-            st.insert(t[i]);
+public: 
+bool check(vector<int>&fre,vector<int>&temp){
+    for(int i=0;i<66;i++){
+        if(fre[i]>temp[i]){
+            return false;
         }
-        int mini=INT_MAX;
-        int minii=-1,  minij=-1;
-        int j = 0;
-        for (int i = 0; i < s.size(); i++) {
-            m[s[i] - 'A']--;
-            if (st.find(s[i]) != st.end() && m[s[i]-'A']==0) {   
-                cnt++;
-            }
+    }
+    return true;
+}
+    string minWindow(string s, string t) {
+        vector<int>fre(66,0);
+        for(int i=0;i<t.size();i++){
+            fre[t[i]-'A']++;
+        }
+        int j=0;
+        vector<int>temp(66);
 
-           
-            while (cnt==st.size() && j <= i) {
-            
+        int mini=INT_MAX;
+        int sti=-1,stj=-1;
+        for(int i=0;i<s.size();i++){
+            temp[s[i]-'A']++;
+            while(check(fre,temp) && j<=i){
                 if(mini>i-j+1){
                     mini=i-j+1;
-                    minii=i;
-                    minij=j;
+                    sti=i;
+                    stj=j;
                 }
-                m[s[j]-'A']++;
-                if(st.find(s[j])!=st.end() && m[s[j]-'A']>0){
-                    cnt--;
-                }
+                temp[s[j]-'A']--;
                 j++;
             }
         }
-        if(minii==-1 && minij==-1){
+        if(sti==-1 || stj==-1){
             return "";
         }
-        return s.substr(minij,minii-minij+1);
+        return s.substr(stj,sti-stj+1);
     }
 };
