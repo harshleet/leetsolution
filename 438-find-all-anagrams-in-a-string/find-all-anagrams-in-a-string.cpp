@@ -1,25 +1,28 @@
 class Solution {
 public:
-    vector<int> findAnagrams(string s, string p) {
-        int j = 0;
-        vector<int> v(26, 0);
-        vector<int> ori(26, 0);
-        for (int i = 0; i < p.size(); i++) {
-            ori[p[i] - 'a']++; 
+    vector<int> findAnagrams(string s2, string s1) {
+        vector<int>fre(26,0);
+        for(int i=0;i<s1.size();i++){
+            fre[s1[i]-'a']++;
         }
-        vector<int> ans;
-        for (int i = 0; i < s.size(); i++) {
-            v[s[i] - 'a']++;
-
-            
-            while (i - j + 1 > p.size()) {
-                v[s[j] - 'a']--;
-                j++;
-            }
-            if (v == ori) {
-                ans.push_back(j);
-            }
+        if(s2.size()<s1.size()){
+            return {};
         }
-        return ans;
+        vector<int>ans;
+        vector<int>temp(26,0);
+        for(int i=0;i<s1.size();i++){
+            temp[s2[i]-'a']++;
+        } 
+        if(temp==fre){
+            ans.push_back(0);
+        }
+        for(int i=s1.size();i<s2.size();i++){
+            temp[s2[i-s1.size()]-'a']--;
+            temp[s2[i]-'a']++;
+            if(temp==fre){
+                ans.push_back(i-s1.size()+1);
+            }
+        }   
+        return ans;    
     }
 };
