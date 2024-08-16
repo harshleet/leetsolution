@@ -16,8 +16,8 @@ public:
             if ((bitmask & (1 << i)) == 0 && sum + matchsticks[i] <= tar) {
                 int temp = bitmask;
                 temp |= (1 << i);
-                ans = helper(sum + matchsticks[i], temp, tar, cnt, matchsticks, dp);
-                if (ans) break;  // Early exit if true
+                ans = ans| helper(sum + matchsticks[i], temp, tar, cnt, matchsticks, dp);
+             
             }
         }
         
