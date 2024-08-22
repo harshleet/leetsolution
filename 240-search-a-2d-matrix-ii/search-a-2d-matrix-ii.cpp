@@ -1,31 +1,21 @@
 class Solution {
 public:
-bool search(int row,vector<vector<int>>&matrix,int target){
-        int l=0,h=matrix[0].size()-1;
-
-        while(l<=h){
-            int mid=(l+h)/2;
-            if(target==matrix[row][mid]){
-                return true;
-            }else if(target<matrix[row][mid]){
-                h=mid-1;
-            }else{
-                l=mid+1;
-            }
-        }
-        return false;
-    }
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        //log(m*n)
-        int i=0,j=matrix[0].size()-1;
-        while(i<matrix.size() && j>=0){
-            if(matrix[i][j]==target){
+        int top=0,bot=matrix.size()-1,low=0,high=matrix[0].size()-1;
+
+        while(top<=bot && low<=high){
+            if(matrix[top][high]==target || matrix[top][low]==target ||matrix[bot][low]==target || matrix[bot][high]==target){
                 return true;
             }
-            if(matrix[i][j]<target){
-                i++;
-            }else{
-                j--;
+            // cout<<low<<" "<<high<<" "<<top<<" "<<bot<<endl;
+            if(matrix[top][high]>target){
+                high--;
+            }else if(matrix[bot][low]<target){
+                low++;
+            }else if(matrix[top][low]<target){
+                top++;
+            }else if(matrix[bot][high]>target){
+                bot--;
             }
         }
         return false;
