@@ -1,48 +1,49 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        
         int n1=nums1.size(),n2=nums2.size();
+        
         if(n1>n2){
             return findMedianSortedArrays(nums2,nums1);
         }
+        int l=0,h=n1;
         int left=(n1+n2+1)/2;
+        while(l<=h){
+            int mid=(l+h)/2;
 
-        int low=0,high=min(left,n1);
-       
-        while(low<=high){
-            int mid=(low+high)/2;
+            int f=mid,s=left-mid;
+            // cout<<f<<" "<<s<<endl;
+            int l1=INT_MIN,l2=INT_MAX,r1=INT_MIN,r2=INT_MAX;
+            if(f-1>=0 ){
+                l1=nums1[f-1];
+            }
 
-            // cout<<mid<<" ";
-            int sec=left-mid;
+            if(f<n1){
+                l2=nums1[f];
+            }
+             if(s-1>=0){
+                r1=nums2[s-1];
+            }
 
-            int lf=INT_MIN,ls=INT_MIN,rf=INT_MAX,rs=INT_MAX;
-            if(mid>0){
-                lf=nums1[mid-1];
+            if(s>=0 && s<n2){
+                r2=nums2[s];
             }
-            if(sec>0){
-                ls=nums2[sec-1];
-            }
-            if(mid<n1){
-                rf=nums1[mid];
-            }
-            if(sec<n2){
-                rs=nums2[sec];
-            }
-            // cout<<lf<<" "<<ls<<" "<<rf<<" "<<rs<<endl;
+           
 
-            if(lf<=rs && ls<=rf){
-                //possible median
-                if((n1+n2)%2==0){
-                    return (max(lf,ls)+min(rs,rf))/(double)2;
+            if(l1<=r2 && r1<=l2){
+                if((n1+n2)%2==1){
+                    return double(max(l1,r1));
                 }else{
-                    return max(lf,ls);
+                    return double(max(l1,r1)+min(l2,r2))/2.0;
                 }
-            }else if(rf<ls){
-                low=mid+1;
-            }else{
-                high=mid-1;
+            }else if(r1>l2){
+                l=mid+1;
+            }else if(l1>r2){
+                h=mid-1;
             }
         }
         return -1;
+
     }
 };
