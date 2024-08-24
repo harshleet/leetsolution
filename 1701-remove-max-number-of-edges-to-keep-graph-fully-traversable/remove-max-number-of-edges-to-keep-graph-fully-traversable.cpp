@@ -1,104 +1,88 @@
 class Solution {
 public:
-  class DisjointSet {
-    vector<int> rank, Parent, size; 
-public: 
-    DisjointSet(int n) {
-        rank.resize(n+1, 0); 
-        Parent.resize(n+1);
-        size.resize(n+1); 
-        for(int i = 0;i<=n;i++) {
-            Parent[i] = i; 
-            size[i] = 1; 
+    class DisjointSet{
+        vector<int>rank;
+        vector<int>par;
+        public:
+        DisjointSet(int n){
+            rank.resize(n+1,0);
+            par.resize(n+1);
+            for(int i=0;i<=n;i++){
+                par[i]=i;
+            }
         }
-    }
 
-    int findUPar(int node) {
-        if(node == Parent[node])
-            return node; 
-        return Parent[node] = findUPar(Parent[node]); 
-    }
+        int findUPar(int node){
+            if(node==par[node]){
+                return node;
+            }
+            return par[node]=findUPar(par[node]);
+        }
 
-    void unionByRank(int u, int v) {
-        int ulp_u = findUPar(u); 
-        int ulp_v = findUPar(v); 
-        if(ulp_u == ulp_v) return; 
-        if(rank[ulp_u] < rank[ulp_v]) {
-            Parent[ulp_u] = ulp_v; 
-        }
-        else if(rank[ulp_v] < rank[ulp_u]) {
-            Parent[ulp_v] = ulp_u; 
-        }
-        else {
-            Parent[ulp_v] = ulp_u; 
-            rank[ulp_u]++; 
-        }
-    }
+        void unionByRank(int u,int v){
+            int upar=findUPar(u);
+            int vpar=findUPar(v);
 
-    void unionBySize(int u, int v) {
-        int ulp_u = findUPar(u); 
-        int ulp_v = findUPar(v); 
-        if(ulp_u == ulp_v) return; 
-        if(size[ulp_u] < size[ulp_v]) {
-            Parent[ulp_u] = ulp_v; 
-            size[ulp_v] += size[ulp_u]; 
+            if(upar==vpar){
+                return;
+            }
+            if (rank[upar] > rank[vpar]) {
+                par[vpar] = upar;
+            } else if (rank[upar] < rank[vpar]) {
+                par[upar] = vpar;
+            } else {
+                par[upar] = vpar;
+                rank[vpar]++;
+            }
         }
-        else {
-            Parent[ulp_v] = ulp_u;
-            size[ulp_u] += size[ulp_v]; 
-        }
-    }
-};
+    };
     int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
-        sort(edges.begin(),edges.end());
-        reverse(edges.begin(),edges.end());
         DisjointSet ds1(n);
         DisjointSet ds2(n);
-        set<vector<int>>extra;
-        for(auto it:edges){
-            if((it[0]==1 || it[0]==3 )&&ds1.findUPar(it[1])!=ds1.findUPar(it[2])){
-                ds1.unionBySize(ds1.findUPar(it[1]),ds1.findUPar(it[2]));
-            }else if(it[0]==1 || it[0]==3 ){
-                extra.insert(it);
+
+        int c=0;
+        vector<vector<int>>maybe;
+        for(int i=0;i<edges.size();i++){
+            int t=edges[i][0],n1=edges[i][1],n2=edges[i][2];
+            if(t==3){
+                if(ds1.findUPar(n1)==ds1.findUPar(n2) && ds2.findUPar(n1)==ds2.findUPar(n2)){
+                    c++;
+                }
+                ds1.unionByRank(n1,n2);
+                ds2.unionByRank(n1,n2);
             }
         }
-        int pare=-1;
+
+        for(int i=0;i<edges.size();i++){
+            int t=edges[i][0],n1=edges[i][1],n2=edges[i][2];
+            if(t==1){
+                if(ds1.findUPar(n1)==ds1.findUPar(n2)){
+                    c++;
+                }
+                ds1.unionByRank(n1,n2);
+                // ds2.unionByRank(n1,n2);
+            }
+            if(t==2){
+                 if(ds2.findUPar(n1)==ds2.findUPar(n2)){
+                    c++;
+                }
+                // ds1.unionByRank(n1,n2);
+                ds2.unionByRank(n1,n2);
+            }
+        }
+        int a=0,b=0;
         for(int i=1;i<=n;i++){
-            if(pare!=-1 && ds1.findUPar(i)!=pare){
-                return -1;
+            // cout<<i<<" "<<ds1.findUPar(i)<<" "<<ds2.findUPar(i)<<endl;
+            if(ds1.findUPar(i)==i){
+                a++;
             }
-            pare=ds1.findUPar(i);
-        }
-        set<vector<int>>extra2;
-        for(auto it:edges){
-            if((it[0]==2 || it[0]==3) && ds2.findUPar(it[1])!=ds2.findUPar(it[2])){
-                ds2.unionBySize(ds2.findUPar(it[1]),ds2.findUPar(it[2]));
-            }else if(it[0]==2 || it[0]==3 ){
-                extra2.insert(it);
+            if(ds2.findUPar(i)==i){
+                b++;
             }
         }
-        pare=-1;
-        for(int i=1;i<=n;i++){
-            if(pare!=-1 && ds2.findUPar(i)!=pare){
-                return -1;
-            }
-            pare=ds2.findUPar(i);
+        if(a!=1 || b!=1){
+            return -1;
         }
-        int cn=0;
-        for(auto it:extra){
-            // cout<<it[0]<<" "<<it[1]<<" "<<it[2]<<endl;
-            if(extra2.find(it)!=extra2.end()){
-                cn++;
-            }else if(it[0]==1){
-                cn++;
-            }
-        } 
-        for(auto it:extra2){
-            // cout<<it[0]<<" "<<it[1]<<" "<<it[2]<<endl;
-            if(it[0]==2){
-                cn++;
-            }
-        } 
-        return cn;
+        return c;
     }
 };
