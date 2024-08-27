@@ -15,9 +15,9 @@ public:
         if(root==NULL){
             return {-1,-1};
         }
-        // if(root->left!=NULL && root->right!=NULL){
-        //     return {root->val,root->val};
-        // }
+        if(root->left==NULL && root->right==NULL){
+            return {root->val,root->val};
+        }
         int mini=root->val,maxi=root->val;
         if(root->left!=NULL){
             pair<int,int>p=helper(root->left,ans);
