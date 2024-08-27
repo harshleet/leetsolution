@@ -11,22 +11,32 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root,vector<int>&cov,int &maxi){
+    pair<int,int> helper(TreeNode* root,int& ans){
         if(root==NULL){
-            return;
+            return {-1,-1};
         }
-        for(int i=0;i<cov.size();i++){
-            maxi=max(maxi,abs(cov[i]-root->val));
+        // if(root->left!=NULL && root->right!=NULL){
+        //     return {root->val,root->val};
+        // }
+        int mini=root->val,maxi=root->val;
+        if(root->left!=NULL){
+            pair<int,int>p=helper(root->left,ans);
+            mini=min({mini,p.first,p.second});
+            maxi=max({maxi,p.first,p.second});
         }
-        cov.push_back(root->val);
-        helper(root->left,cov,maxi);
-        helper(root->right,cov,maxi);
-        cov.pop_back();
+
+        if(root->right!=NULL){
+            pair<int,int>p=helper(root->right,ans);
+            mini=min({mini,p.first,p.second});
+            maxi=max({maxi,p.first,p.second});
+        }
+        ans=max(ans,abs(mini-root->val));
+        ans=max(ans,abs(maxi-root->val));
+        return {maxi,mini};
     }
     int maxAncestorDiff(TreeNode* root) {
-        vector<int>cov;
         int maxi=0;
-        helper(root,cov,maxi);
+        helper(root,maxi);
         return maxi;
     }
 };
