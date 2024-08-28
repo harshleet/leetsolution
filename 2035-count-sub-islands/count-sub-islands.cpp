@@ -2,8 +2,9 @@ class Solution {
 public:
     vector<int>dr={1,-1,0,0};
     vector<int>dc={0,0,1,-1};
+    int n,m;
     void dfs(int r,int c,vector<vector<int>>& grid1, vector<vector<int>>& grid2,bool &f,vector<vector<int>>&vis){
-        int n=grid1.size(),m=grid1[0].size();
+        
         vis[r][c]=1;
         if(grid1[r][c]==0){
             f&=false;
@@ -18,7 +19,7 @@ public:
         }
     }
     int countSubIslands(vector<vector<int>>& grid1, vector<vector<int>>& grid2) {
-        int n=grid1.size(),m=grid1[0].size();
+       n=grid1.size(),m=grid1[0].size();
 
         vector<vector<int>>vis(n,vector<int>(m,0));
         int cnt=0;
