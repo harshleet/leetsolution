@@ -1,50 +1,44 @@
 class Solution {
 public:
     string reorganizeString(string s) {
-        priority_queue<pair<int,char>>pq;
-        map<char,int>mp;
+        vector<int>fre(26,0);
         for(int i=0;i<s.size();i++){
-            mp[s[i]]++;
-        }
-        for(auto it:mp){
-            if(it.second>ceil(s.size()/2.0)){
+            fre[s[i]-'a']++;
+            if(fre[s[i]-'a']>ceil(s.size()/2.0)){
                 return "";
             }
-            pq.push({it.second,it.first});
+        }
+        priority_queue<pair<int,char>>pq;
+        for(int i=0;i<26;i++){
+            if(fre[i]>0)
+               pq.push({fre[i],char(i+'a')});
         }
 
         string ans="";
-
         while(!pq.empty()){
             if(pq.top().first==1){
-                while(!pq.empty()){
-                    ans+=pq.top().second;
-                    pq.pop();
-                }
-                return ans;
+                break;
             }
-            // cout<<"a"<<endl;
-             vector<pair<int,char>>temp;
-             temp.push_back(pq.top());
-             ans+=pq.top().second;
-            //   cout<<pq.top().second<<endl;
+            vector<pair<int,char>>temp;
+            ans+=pq.top().second;
+            temp.push_back(pq.top());
             pq.pop();
-           
-            for(int i=0;i<1;i++){
-                if(!pq.empty()){
-                    ans+=pq.top().second;
-                    temp.push_back(pq.top());
-                    //  cout<<pq.top().second<<endl;
-                    pq.pop();
-                }
-            }
 
+            if(!pq.empty()){
+                ans+=pq.top().second;
+                temp.push_back(pq.top());
+                pq.pop();
+            }
             for(int i=0;i<temp.size();i++){
                 if(temp[i].first>1){
-
                     pq.push({temp[i].first-1,temp[i].second});
                 }
             }
+        }
+
+        while(!pq.empty()){
+            ans+=pq.top().second;
+            pq.pop();
         }
         return ans;
     }
