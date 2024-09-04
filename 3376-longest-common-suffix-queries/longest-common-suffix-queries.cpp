@@ -67,14 +67,7 @@ public:
             crawl=crawl->children[int(prefix[i]-'a')];
         }
         return crawl->index;
-        // int mini = INT_MAX, minii = -1;
-        // for (int i = 0; i < crawl->index.size(); i++) {
-        //     if (mp[crawl->index[i]] < mini) {
-        //         mini = mp[crawl->index[i]];
-        //         minii = crawl->index[i];
-        //     }
-        // }
-        // return minii;
+       
     }
 };
 
