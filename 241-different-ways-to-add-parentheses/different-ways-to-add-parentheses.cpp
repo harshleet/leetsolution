@@ -1,6 +1,6 @@
 class Solution {
 public:
-   vector<int> helper(string ex,int size){
+    vector<int> helper(string ex,int size){
         if(ex.size()==0){
             return {};
         }
@@ -28,10 +28,8 @@ public:
              res.push_back(stoi(ex));
         }
         return res;
-        
-        
     }
     vector<int> diffWaysToCompute(string expression) {
-        return helper(expression,int(expression.size()));
+       return helper(expression,expression.size());
     }
 };
