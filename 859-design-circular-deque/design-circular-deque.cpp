@@ -1,83 +1,74 @@
 class MyCircularDeque {
 public:
-   map<int,int>mp;
-   int sz;
-   int f,b;
+    list<int>ls;
+    int sz;
+    int csz=0;
     MyCircularDeque(int k) {
         sz=k;
-        f=sz+1;
-        b=sz;
     }
     
     bool insertFront(int value) {
-        if(mp.size()<sz){
-            mp[b]=value;
-             b--;
-             return true;
-        }else{
+        if(isFull()){
             return false;
         }
-        
+        ls.push_front(value);
+        csz++;
+        return true;
     }
     
     bool insertLast(int value) {
-        if(mp.size()<sz){
-           
-           mp[f]=value;
-            f++;
-             return true;
-        }else{
+        if(isFull()){
             return false;
         }
-        
+        ls.push_back(value);
+        csz++;
+        return true;
     }
     
     bool deleteFront() {
-        if(mp.size()!=0){
-            int val=(mp.begin())->first;
-             mp.erase(val);
-             b++;
-             return true;
-
-        }else{
+        if(isEmpty()){
             return false;
         }
+        ls.pop_front();
+        csz--;
+        return true;
     }
     
     bool deleteLast() {
-        if(mp.size()!=0){
-            int val=(mp.rbegin())->first;
-        mp.erase(val);
-        f--;
-        return true;
-        }else{
+        if(isEmpty()){
             return false;
         }
-        
+        ls.pop_back();
+        csz--;
+        return true;
     }
     
     int getFront() {
-        if(mp.size()==0){
+        if(ls.size()==0){
             return -1;
         }
-        int val=(mp.begin())->second;
-        return val;
+        return ls.front();
     }
     
     int getRear() {
-        if(mp.size()==0){
+        if(ls.size()==0){
             return -1;
         }
-        int val=(mp.rbegin())->second;
-        return val;
+        return ls.back();
     }
     
     bool isEmpty() {
-        return mp.size()==0;
+        if(csz==0){
+            return true;
+        }
+        return false;
     }
     
     bool isFull() {
-        return mp.size()==sz;
+        if(sz==csz){
+            return true;
+        }
+        return false;
     }
 };
 
