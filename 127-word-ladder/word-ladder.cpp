@@ -1,28 +1,30 @@
 class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        set<string>word(wordList.begin(),wordList.end());
+        set<string>words(wordList.begin(),wordList.end());
         map<string,int>vis;
-        queue<pair<int,string>>q;
-        q.push({0,beginWord});
+
+        queue<pair<string,int>>q;
+        q.push({beginWord,0});
         vis[beginWord]=1;
+
         while(!q.empty()){
-            int dis=q.front().first;
-            string node=q.front().second;
+            string temp=q.front().first;
+            int step=q.front().second;
             q.pop();
 
-            if(node==endWord){
-                return dis+1;
+            if(temp==endWord){
+                return step+1;
             }
-            string ori=node;
-            for(int i=0;i<node.size();i++){
+
+            for(int i=0;i<temp.size();i++){
                 for(char j='a';j<='z';j++){
-                    ori[i]=j;
-                   if(vis.find(ori)==vis.end() && word.find(ori)!=word.end()){
-                      q.push({dis+1,ori});
-                      vis[ori]=1;
-                   }
-                   ori=node;
+                    string temp2=temp;
+                    temp2[i]=j;
+                    if(vis.find(temp2)==vis.end() && words.find(temp2)!=words.end()){
+                        vis[temp2]=1;
+                        q.push({temp2,step+1});
+                    }
                 }
             }
         }
