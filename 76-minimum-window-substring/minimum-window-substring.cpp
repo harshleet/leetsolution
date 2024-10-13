@@ -1,38 +1,47 @@
 class Solution {
-public: 
-bool check(vector<int>&fre,vector<int>&temp){
-    for(int i=0;i<66;i++){
-        if(fre[i]>temp[i]){
-            return false;
-        }
-    }
-    return true;
-}
+public:
     string minWindow(string s, string t) {
-        vector<int>fre(66,0);
+        map<char,int>mp;
+        map<char,int>fre;
         for(int i=0;i<t.size();i++){
-            fre[t[i]-'A']++;
+            mp[t[i]]++;
+            fre[t[i]]++;
         }
-        int j=0;
-        vector<int>temp(66);
 
-        int mini=INT_MAX;
-        int sti=-1,stj=-1;
+        int j=0;
+        int c=fre.size();
+        int mini=INT_MAX,minii=-1,minij=-1;
         for(int i=0;i<s.size();i++){
-            temp[s[i]-'A']++;
-            while(check(fre,temp) && j<=i){
-                if(mini>i-j+1){
-                    mini=i-j+1;
-                    sti=i;
-                    stj=j;
+            if(fre.find(s[i])!=fre.end()){
+                mp[s[i]]--;
+                if(mp[s[i]]==0){
+                    mp.erase(s[i]);
+                    c--;
                 }
-                temp[s[j]-'A']--;
-                j++;
             }
+
+            while(c==0){
+                // cout<<i<<" "<<j<<endl;
+                if(i-j+1<mini){
+                    mini=i-j+1;
+                    minii=i;
+                    minij=j;
+                }
+                if(fre.find(s[j])!=fre.end()){
+                    mp[s[j]]++;
+                    if(mp[s[j]]==1){
+                        c++;
+                    }
+                }
+                j++;
+
+            }
+            
         }
-        if(sti==-1 || stj==-1){
+        if(mini==INT_MAX){
             return "";
         }
-        return s.substr(stj,sti-stj+1);
+        cout<<minij<<" "<<minii<<endl;
+        return s.substr(minij,minii-minij+1); 
     }
 };
