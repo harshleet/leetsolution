@@ -1,32 +1,38 @@
 class Solution {
 public:
     int minimumSubarrayLength(vector<int>& nums, int k) {
-        int cur=0,j=0,mini=INT_MAX;
-        vector<int>fre(31,0);
+        vector<int>bits(32,0);
+        int mini=INT_MAX;
+        int st=0;
+        int j=0;
         for(int i=0;i<nums.size();i++){
-            cur|=nums[i];
-            string temp=bitset<31>(nums[i]).to_string();
-            for(int l=0;l<31;l++){
-                if(temp[l]=='1'){
-                    fre[l]++;
+            string b=bitset<32>(nums[i]).to_string();
+            for(int l=0;l<32;l++){
+                if(b[l]=='1'){
+                    bits[l]++;
+
+                    if(bits[l]==1){
+                        st|=(1<<(31-l));
+                    }
                 }
             }
-            while(cur>=k && j<=i){
+
+            while(st>=k && j<=i){
                 mini=min(mini,i-j+1);
-                string t2=bitset<31>(nums[j]).to_string();
-               
-                for(int l=0;l<31;l++){
-                    if(t2[l]=='1'){
-                        fre[l]--;
+                 string b1=bitset<32>(nums[j]).to_string();
+                    for(int l=0;l<32;l++){
+                        if(b1[l]=='1'){
+                            bits[l]--;
+
+                            if(bits[l]==0){
+                                st&=(~(1<<(31-l)));
+                            }
+                        }
                     }
-                    if(fre[l]==0){
-                        cur&=(~(1<<(30-l)));
-                    }
-                }
-                j++;
+                    j++;
             }
         }
-        if(mini>=INT_MAX){
+        if(mini==INT_MAX){
             return -1;
         }
         return mini;
