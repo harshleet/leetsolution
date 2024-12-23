@@ -11,56 +11,61 @@
  */
 class Solution {
 public:
-    int swap_count(vector<int>&v){
-        int n=v.size();
-
-        vector<bool>vis(n,false);
-        vector<pair<int,int>>temp(n);
-        for(int i=0;i<n;i++){
-            // cout<<v[i]<<" ";
-            temp[i]={v[i],i};
+    int swaps(vector<int>& temp){
+        vector<pair<int,int>>ori;
+        for(int i=0;i<temp.size();i++){
+            ori.push_back({temp[i],i});
         }
-        sort(temp.begin(),temp.end());
+        sort(ori.begin(),ori.end());
+        vector<int>vis(temp.size());
         int ans=0;
-        for(int i=0;i<n;i++){
-            if(i==temp[i].second || vis[i]==true){
+        for(int i=0;i<temp.size();i++){
+            if(vis[i]==1 || ori[i].second==i  ){
                 continue;
             }
-            int j=i,clen=0;
-            while(vis[j]==false){
-                vis[j]=true;
-                clen++;
-                j=temp[j].second;
+           
+
+            int cycle_size = 0;
+            int y = i;
+            while (!vis[y]) {
+                vis[y] = true;
+                y = ori[y].second;
+                cycle_size++;
             }
-            ans+=(clen-1);
+
+            if (cycle_size > 1) {
+                ans += (cycle_size - 1);
+            }
         }
-        // cout<<ans<<endl;
         return ans;
+       
     }
     int minimumOperations(TreeNode* root) {
-        if(root==NULL){
-            return 0;
-        }
+        
         queue<TreeNode*>q;
+
         q.push(root);
+
         int ans=0;
         while(!q.empty()){
             int sz=q.size();
+
             vector<int>temp;
             for(int i=0;i<sz;i++){
                 TreeNode* node=q.front();
                 q.pop();
-                temp.push_back(node->val);
 
+                temp.push_back(node->val);
                 if(node->left!=NULL){
                     q.push(node->left);
                 }
+
                 if(node->right!=NULL){
                     q.push(node->right);
                 }
             }
-            int c=swap_count(temp);
-            ans+=c;
+            int cnt=swaps(temp);
+            ans+=cnt;
         }
         return ans;
     }
