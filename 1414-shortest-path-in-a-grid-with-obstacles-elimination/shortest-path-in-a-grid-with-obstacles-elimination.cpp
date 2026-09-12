@@ -7,7 +7,7 @@ public:
 
 
         vector<vector<vector<int>>>dis(n,vector<vector<int>>(m,vector<int>(k+1,1e8)));
-        priority_queue<array<int,4>,vector<array<int,4>>,greater<array<int,4>>>pq;
+        queue<array<int,4>>pq;
         
 
         if(grid[0][0]==1 && k>0){
@@ -21,10 +21,10 @@ public:
         }
 
         while(!pq.empty()){
-            int dist=pq.top()[0];
-            int ob=pq.top()[1];
-            int r=pq.top()[2];
-            int c=pq.top()[3];
+            int dist=pq.front()[0];
+            int ob=pq.front()[1];
+            int r=pq.front()[2];
+            int c=pq.front()[3];
             pq.pop();
 
             for(int i=0;i<4;i++){
