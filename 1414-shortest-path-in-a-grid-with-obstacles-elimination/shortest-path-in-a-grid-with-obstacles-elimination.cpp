@@ -2,40 +2,56 @@ class Solution {
 public:
     int shortestPath(vector<vector<int>>& grid, int k) {
         int n=grid.size(),m=grid[0].size();
-        vector<vector<vector<int>>>vis(n,vector<vector<int>>(m,vector<int>(k+1,0)));
-
-        queue<vector<int>>q;
-        q.push({0,0,k,0});
-     
-
-        vis[0][0][k]=1;
         vector<int>dr={1,-1,0,0};
-        vector<int>dc={0,0,-1,1};
-        int mini=1e9;
-        while(!q.empty()){
-            vector<int>t=q.front();
-            q.pop();
+        vector<int>dc={0,0,1,-1};
 
-            if(t[0]==n-1 && t[1]==m-1){
-                mini=min(mini,t[3]);
-            }
+
+        vector<vector<vector<int>>>dis(n,vector<vector<int>>(m,vector<int>(k+1,1e8)));
+        priority_queue<array<int,4>,vector<array<int,4>>,greater<array<int,4>>>pq;
+        
+
+        if(grid[0][0]==1 && k>0){
+            dis[0][0][1]=0;
+            pq.push({0,1,0,0});
+        }else if(grid[0][0]==1){
+            return -1;
+        }else{
+            dis[0][0][0]=0;
+            pq.push({0,0,0,0});
+        }
+
+        while(!pq.empty()){
+            int dist=pq.top()[0];
+            int ob=pq.top()[1];
+            int r=pq.top()[2];
+            int c=pq.top()[3];
+            pq.pop();
+
             for(int i=0;i<4;i++){
-                int nr=t[0]+dr[i];
-                int nc=t[1]+dc[i];
-                if(nr>=0 && nc>=0 && nr<n && nc<m ){
-                    if(grid[nr][nc]==0 && !vis[nr][nc][t[2]]){
-                       vis[nr][nc][t[2]]=1;
-                        q.push({nr,nc,t[2],t[3]+1});
-                    }else if(grid[nr][nc]==1 && t[2]>0 && !vis[nr][nc][t[2]-1]){
-                        vis[nr][nc][t[2]-1]=1;
-                        q.push({nr,nc,t[2]-1,t[3]+1});
+                int nr=r+dr[i];
+                int nc=c+dc[i];
+                if(nr>=0 && nc>=0 && nr<n && nc<m){
+                    if(grid[nr][nc]==1 && ob<k && dis[nr][nc][ob+1]>dist+1){
+                        dis[nr][nc][ob+1]=dist+1;
+                        pq.push({dis[nr][nc][ob+1],ob+1,nr,nc});
+                    }else if(grid[nr][nc]==0 && dis[nr][nc][ob]>dist+1){
+                        dis[nr][nc][ob]=dist+1;
+                        pq.push({dis[nr][nc][ob],ob,nr,nc});
                     }
                 }
             }
         }
-        if(mini==1e9){
+        int mini=1e8;
+        for(int i=0;i<=k;i++){
+            mini=min(mini,dis[n-1][m-1][i]);
+        }
+
+
+        if(mini==1e8){
             return -1;
         }
+
         return mini;
+        
     }
 };
